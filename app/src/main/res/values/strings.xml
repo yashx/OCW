@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MIT OCW</string>
+    <string name="urlExtra">urlExtra</string>
+    <string name="courseTitlePlaceholder">Course Title</string>
+    <string name="courseDesc">Description</string>
+
+</resources>
