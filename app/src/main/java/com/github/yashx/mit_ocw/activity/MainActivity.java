@@ -1,4 +1,4 @@
-package com.github.yashx.mit_ocw;
+package com.github.yashx.mit_ocw.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.activity.CourseActivity;
 
 public class MainActivity extends AppCompatActivity {

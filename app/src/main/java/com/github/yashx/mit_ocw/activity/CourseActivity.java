@@ -111,9 +111,12 @@ public class CourseActivity extends AppCompatActivity {
                         i++;
                         tabLayout.addTab(tabLayout.newTab().setText(e.selectFirst("a").text().trim())
                                 .setTag("home"));
-                    } else
-                        tabLayout.addTab(tabLayout.newTab().setText(e.selectFirst("a").text().trim())
-                                .setTag(e.selectFirst("a").absUrl("href")));
+                    } else {
+                        String s = e.selectFirst("a").text().trim().toLowerCase();
+                        if (!(s.contains("insight") || s.contains("download")))
+                            tabLayout.addTab(tabLayout.newTab().setText(s)
+                                    .setTag(e.selectFirst("a").absUrl("href")));
+                    }
                 }
             }
 //            tabs.remove(tabs.size()-1);
@@ -122,7 +125,7 @@ public class CourseActivity extends AppCompatActivity {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
 //                    Toast.makeText(c, tab.getTag().toString(), Toast.LENGTH_LONG).show();
-                    Fragment currentFragment = null;
+                    Fragment currentFragment;
                     if (tab.getTag().toString().equals("home"))
                         currentFragment = CourseHomeFragment.newInstance(document);
                     else
@@ -146,6 +149,8 @@ public class CourseActivity extends AppCompatActivity {
             //getting doc with jsoup
             Document doc = null;
             try {
+                if (!strings[0].endsWith("/"))
+                    strings[0] += "/";
                 doc = Jsoup.connect(strings[0]).get();
             } catch (Exception e) {
                 Log.e("TAG", "doInBackground: ", e);
