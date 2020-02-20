@@ -26,7 +26,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-public class CourseActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
+public class DepartmentActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
 
     private String url;
     private ImageTextTabBarFragment.Callbacks callbacks;
@@ -66,7 +66,7 @@ public class CourseActivity extends AppCompatActivity implements ImageTextTabBar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         url = getIntent().getStringExtra("urlExtra");
-        new JsoupDocumentAsyncLoader().execute(url);
+        new DepartmentActivity.JsoupDocumentAsyncLoader().execute(url);
     }
 
     @Override

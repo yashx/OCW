@@ -226,7 +226,7 @@ public class HtmlRendererCourseFragment extends Fragment {
     }
 
     int getDps(float f) {
-        float s = getContext().getResources().getDisplayMetrics().density;
+        float s = context.getResources().getDisplayMetrics().density;
         return (int) (f * s + 0.5f);
     }
 }

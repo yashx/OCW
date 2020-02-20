@@ -9,7 +9,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.activity.CourseActivity;
 
 public class MainActivity extends AppCompatActivity {
 
