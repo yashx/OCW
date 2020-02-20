@@ -1,7 +1,10 @@
 package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -23,6 +26,8 @@ import androidx.fragment.app.Fragment;
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.util.SpannableStringMaker;
 import com.github.yashx.mit_ocw.util.ViewBuilders;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -83,9 +88,39 @@ public class HtmlRendererCourseFragment extends Fragment {
         @Override
         protected void onPostExecute(Document document) {
             super.onPostExecute(document);
-            //web page is received and processed
-            Element eT = document.selectFirst("body main");
+            Element eT;
             Elements eTs;
+
+            eT = document.selectFirst("#course_nav > ul > li.selected");
+            if (eT.select(".tlp_links") != null) {
+                //getting sub links and setting up chips
+                eTs = document.select("ul.selected li");
+                if (eTs != null) {
+                    ChipGroup cp = new ChipGroup(context);
+                    cp.setPadding(getDps(16f), getDps(8f), getDps(16f), getDps(0f));
+                    for (Element e : eTs) {
+                        //getting absolute url
+                        String url = "https://ocw.mit.edu/" + e.selectFirst("a").attr("href");
+                        System.out.println(url);
+                        String s = e.text().trim();
+                        Chip chip = new Chip(context);
+                        chip.setText(s);
+                        chip.setTag(url);
+                        chip.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse((String) v.getTag()));
+                                startActivity(i);
+                            }
+                        });
+                        cp.addView(chip);
+                    }
+                    linearLayout.addView(cp);
+                }
+            }
+
+            //web page is received and processed
+            eT = document.selectFirst("body main");
             if (eT != null) {
                 //removes all images from html and replacing them with their alt text
                 eTs = eT.select("img");
@@ -148,8 +183,9 @@ public class HtmlRendererCourseFragment extends Fragment {
 
                             TextView t;
                             for (Element el : e.select("th")) {
-                                t = ViewBuilders.BigHeadingTextView(context, el.text());
+                                t = ViewBuilders.SmallHeadingTextView(context, el.text());
                                 t.setLayoutParams(rowParams);
+                                t.setBackgroundColor(Color.parseColor("#212121"));
                                 tableRow.addView(t);
                             }
                             tableLayout.addView(tableRow);
@@ -187,5 +223,10 @@ public class HtmlRendererCourseFragment extends Fragment {
                 }
             }
         }
+    }
+
+    int getDps(float f) {
+        float s = getContext().getResources().getDisplayMetrics().density;
+        return (int) (f * s + 0.5f);
     }
 }

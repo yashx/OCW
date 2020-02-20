@@ -1,10 +1,13 @@
 package com.github.yashx.mit_ocw.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,6 +37,14 @@ public class CourseActivity extends AppCompatActivity {
     Toolbar toolbar;
     RelativeLayout r;
     TabLayout tabLayout;
+    String url;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.course_activity_menu, menu);
+        return true;
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +63,7 @@ public class CourseActivity extends AppCompatActivity {
 
 
         //getting url from intent
-        String url = getIntent().getStringExtra(c.getResources().getString(R.string.urlExtra));
+        url = getIntent().getStringExtra(c.getResources().getString(R.string.urlExtra));
         new Loader().execute(url);
 
 
@@ -63,6 +74,10 @@ public class CourseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.openInBrowserMenuItem:
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -106,16 +121,19 @@ public class CourseActivity extends AppCompatActivity {
 
             int i = 0;
             for (Element e : document.select("#course_nav > ul > li")) {
-                if (e.selectFirst("a") != null && !e.selectFirst("a").text().isEmpty()) {
+                Element el = e.selectFirst(".tlp_links");
+                String selector = el == null ? "a" : "a:nth-child(2)";
+
+                if (e.selectFirst(selector) != null && !e.selectFirst(selector).text().isEmpty()) {
                     if (i == 0) {
                         i++;
                         tabLayout.addTab(tabLayout.newTab().setText(e.selectFirst("a").text().trim())
                                 .setTag("home"));
                     } else {
-                        String s = e.selectFirst("a").text().trim().toLowerCase();
+                        String s = e.selectFirst(selector).text().trim().toLowerCase();
                         if (!(s.contains("insight") || s.contains("download")))
                             tabLayout.addTab(tabLayout.newTab().setText(s)
-                                    .setTag(e.selectFirst("a").absUrl("href")));
+                                    .setTag(e.selectFirst(selector).absUrl("href")));
                     }
                 }
             }
