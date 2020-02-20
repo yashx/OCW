@@ -2,26 +2,25 @@ package com.github.yashx.mit_ocw.activity;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.adapter.CourseFragmentPagerAdapter;
+import com.github.yashx.mit_ocw.fragment.CourseHomeFragment;
+import com.github.yashx.mit_ocw.fragment.HtmlRendererCourseFragment;
+import com.github.yashx.mit_ocw.util.ViewBuilders;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
@@ -29,15 +28,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.ArrayList;
-
 public class CourseActivity extends AppCompatActivity {
 
     Context c;
     Toolbar toolbar;
     RelativeLayout r;
     TabLayout tabLayout;
-    ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +44,6 @@ public class CourseActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayoutCourseActivity);
         r = findViewById(R.id.relativeLayoutCourseActivity);
         toolbar = findViewById(R.id.toolbarCourseActivity);
-        viewPager = findViewById(R.id.viewPagerCourseActivity);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,7 +70,7 @@ public class CourseActivity extends AppCompatActivity {
 
     class Loader extends AsyncTask<String, String, Document> {
         @Override
-        protected void onPostExecute(Document document) {
+        protected void onPostExecute(final Document document) {
             super.onPostExecute(document);
 
             //getting courseImage url and loading it
@@ -97,13 +92,7 @@ public class CourseActivity extends AppCompatActivity {
             //getting course title
             String t = document.select("#course_title > h1").first().text();
 
-            TextView textView = new TextView(c);
-            textView.setTextColor(Color.WHITE);
-            textView.setShadowLayer(getDps(12.0f), getDps(0.5f), 0, Color.BLACK);
-            textView.setPadding(getDps(16f), getDps(16f), getDps(16f), getDps(16f));
-            textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-            textView.setText(t);
+            TextView textView = ViewBuilders.BigHeadingTextView(c, t);
             lp = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -113,16 +102,43 @@ public class CourseActivity extends AppCompatActivity {
             r.addView(imageView, 0);
             r.addView(textView, 1);
 
-            ArrayList<String> tabs = new ArrayList<>();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCourseActivity, CourseHomeFragment.newInstance(document)).commit();
+
+            int i = 0;
             for (Element e : document.select("#course_nav > ul > li")) {
                 if (e.selectFirst("a") != null && !e.selectFirst("a").text().isEmpty()) {
-                    tabs.add(e.selectFirst("a").text().trim());
+                    if (i == 0) {
+                        i++;
+                        tabLayout.addTab(tabLayout.newTab().setText(e.selectFirst("a").text().trim())
+                                .setTag("home"));
+                    } else
+                        tabLayout.addTab(tabLayout.newTab().setText(e.selectFirst("a").text().trim())
+                                .setTag(e.selectFirst("a").absUrl("href")));
                 }
             }
-            tabs.remove(tabs.size()-1);
-            viewPager.setAdapter(new CourseFragmentPagerAdapter(getSupportFragmentManager(),
-                    FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, document, tabs));
-            tabLayout.setupWithViewPager(viewPager);
+//            tabs.remove(tabs.size()-1);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+//                    Toast.makeText(c, tab.getTag().toString(), Toast.LENGTH_LONG).show();
+                    Fragment currentFragment = null;
+                    if (tab.getTag().toString().equals("home"))
+                        currentFragment = CourseHomeFragment.newInstance(document);
+                    else
+                        currentFragment = HtmlRendererCourseFragment.newInstance(tab.getTag().toString());
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCourseActivity, currentFragment).commit();
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
 
         @Override
@@ -136,11 +152,6 @@ public class CourseActivity extends AppCompatActivity {
             }
             return doc;
         }
-    }
-
-    int getDps(float f) {
-        float s = c.getResources().getDisplayMetrics().density;
-        return (int) (f * s + 0.5f);
     }
 
 }

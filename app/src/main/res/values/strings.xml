@@ -3,5 +3,6 @@
     <string name="urlExtra">urlExtra</string>
     <string name="courseTitlePlaceholder">Course Title</string>
     <string name="courseDesc">Description</string>
+    <string name="courseInstructor">Instructor</string>
 
 </resources>

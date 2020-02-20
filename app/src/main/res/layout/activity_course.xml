@@ -25,9 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPagerCourseActivity"
+        <FrameLayout
+            android:id="@+id/frameLayoutCourseActivity"
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </ScrollView>
