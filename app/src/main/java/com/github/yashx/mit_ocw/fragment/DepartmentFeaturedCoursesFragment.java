@@ -80,6 +80,7 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
     class JsonFetcherAsync extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... url) {
+            //getting json for course
             String s = url[0];
             String json = "";
             try {
@@ -93,9 +94,13 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
         @Override
         protected void onPostExecute(String json) {
             super.onPostExecute(json);
+
+            //object from model class
             CourseListItem courseListItem;
-            View v = LayoutInflater.from(context).inflate(R.layout.listitem_course, linearLayout, false);
             courseListItem = CourseListItem.fromJson(json);
+
+            //inflating listitem_course and adding it to fragment
+            View v = LayoutInflater.from(context).inflate(R.layout.listitem_course, linearLayout, false);
             ((TextView) v.findViewById(R.id.titleTextViewCourseListItem)).setText(courseListItem.getTitle());
             ((TextView) v.findViewById(R.id.subTitleTextViewCourseListItem)).setText(courseListItem.getSubtitle());
             Picasso.get().load(courseListItem.getThumb()).into(((ImageView) v.findViewById(R.id.imageViewCourseListItem)));

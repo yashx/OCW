@@ -15,7 +15,6 @@ import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -23,7 +22,7 @@ import org.jsoup.Jsoup;
 import java.util.ArrayList;
 
 public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCourseListItemRecyclerAdapter.CourseListItemViewHolder> {
-    ArrayList<CourseListItem> courses;
+    private ArrayList<CourseListItem> courses;
 
     class CourseListItemViewHolder extends RecyclerView.ViewHolder {
         ImageView courseThumbImage;
@@ -58,7 +57,6 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
     }
 
 
-
     @Override
     public void onBindViewHolder(@NonNull CourseListItemViewHolder holder, int position) {
         CourseListItem courseListItem = courses.get(position);
@@ -66,8 +64,6 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
         holder.courseSubtitle.setText(courseListItem.getSubtitle());
         (holder.courseThumbImage).setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
         (holder.courseThumbImage).setMinimumWidth((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
-//        if (!TextUtils.isEmpty(courseListItem.getThumb()))
-//            Picasso.get().load(courseListItem.getThumb()).into(holder.courseThumbImage);
 
         String url = courseListItem.getHref();
 
@@ -79,6 +75,7 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
         } else
             url = url + "index.json";
 
+        //using href to get json and from it load image
         new ImageFetcherAsync(holder.courseThumbImage, url).execute();
 
     }
@@ -112,18 +109,7 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
             if (!s.contains("https://"))
                 s = "https://ocw.mit.edu" + s;
 
-            System.out.println(s);
-            Picasso.get().load(s).error(android.R.drawable.stat_notify_error).into(imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    e.printStackTrace();
-                }
-            });
+            Picasso.get().load(s).error(android.R.drawable.stat_notify_error).into(imageView);
         }
     }
 }

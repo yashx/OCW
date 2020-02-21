@@ -85,6 +85,7 @@ public class HtmlRendererCourseFragment extends Fragment {
             Elements eTs;
 
             eT = document.selectFirst("#course_nav > ul > li.selected");
+            //checking if selected link has sub links
             if (eT.select(".tlp_links") != null) {
                 //getting sub links and setting up chips
                 eTs = document.select("ul.selected li");
@@ -115,8 +116,9 @@ public class HtmlRendererCourseFragment extends Fragment {
             //web page is received and processed
             eT = document.selectFirst("body main");
             if (eT != null) {
+                //cleans the html to be build easily
                 eT = JsoupElementCleaner.elementCleaner(eT);
-                //going through all necessary elements in html and rendering them appropriately
+                //going through all necessary elements in html and building them appropriately
                 eTs = eT.select(">:not(.help)");
                 ArrayList<View> vs = JsoupViewBuilder.elementsBuilder(eTs, context);
                 for (View v : vs)

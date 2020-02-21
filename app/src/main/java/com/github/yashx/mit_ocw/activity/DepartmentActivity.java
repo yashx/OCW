@@ -16,8 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.fragment.DepartmentAllCoursesFragment;
-import com.github.yashx.mit_ocw.fragment.DepartmentHomeFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentFeaturedCoursesFragment;
+import com.github.yashx.mit_ocw.fragment.DepartmentHomeFragment;
 import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
 
 import org.jsoup.Jsoup;
@@ -25,11 +25,30 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
+//see course activity for explanations not given as most code is same
 public class DepartmentActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
 
     private String url;
     private ImageTextTabBarFragment.Callbacks callbacks;
     private Document doc;
+
+    @Override
+    public void onTabPressed(Object tabTag) {
+        Fragment currentFragment;
+        switch ((String) tabTag) {
+            default:
+            case "home":
+                currentFragment = DepartmentHomeFragment.newInstance(doc);
+                break;
+            case "Featured Courses":
+                currentFragment = DepartmentFeaturedCoursesFragment.newInstance(doc);
+                break;
+            case "All Courses":
+                currentFragment = DepartmentAllCoursesFragment.newInstance(doc);
+                break;
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity, currentFragment).commit();
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -59,6 +78,7 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
 
         Toolbar toolbar = findViewById(R.id.toolbarCommonActivity);
         callbacks = this;
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -68,38 +88,20 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
         new DepartmentActivity.JsoupDocumentAsyncLoader().execute(url);
     }
 
-    @Override
-    public void onTabPressed(Object tabTag) {
-        Fragment currentFragment;
-        switch ((String) tabTag) {
-            default:
-            case "home":
-                currentFragment = DepartmentHomeFragment.newInstance(doc);
-                break;
-            case "Featured Courses":
-                currentFragment = DepartmentFeaturedCoursesFragment.newInstance(doc);
-                break;
-            case "All Courses":
-                currentFragment = DepartmentAllCoursesFragment.newInstance(doc);
-                break;
-
-        }
-//        else
-//            currentFragment = HtmlRendererCourseFragment.newInstance((String) tabTag);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity, currentFragment).commit();
-    }
-
     class JsoupDocumentAsyncLoader extends AsyncTask<String, String, Document> {
         @Override
         protected void onPostExecute(Document document) {
             super.onPostExecute(document);
 
             doc = document;
+            //finds department pic absolute url
             String u = document.select("#global_inner > img").first().absUrl("src");
+            //finds department name
             String t = document.select("#parent-fieldname-title").first().text();
             ArrayList<String> tabNames = new ArrayList<>();
             ArrayList<String> tabTags = new ArrayList<>();
 
+            //for tabs (nothing needs to be loaded as everything is on doc)
             tabNames.add("Home");
             tabNames.add("Featured Courses");
             tabNames.add("All Courses");
@@ -109,6 +111,7 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
 
             ImageTextTabBarFragment imageTextTabBarFragment = ImageTextTabBarFragment.newInstance(u, t, tabNames, tabTags);
             imageTextTabBarFragment.setCallbacks(callbacks);
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
                     .replace(R.id.frameLayoutCommonActivity, DepartmentHomeFragment.newInstance(document))

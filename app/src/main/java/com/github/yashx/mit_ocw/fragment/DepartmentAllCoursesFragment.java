@@ -1,16 +1,11 @@
 package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,10 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.adapter.AllCourseListItemRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -92,7 +83,8 @@ public class DepartmentAllCoursesFragment extends Fragment {
                 );
 
                 courseListItems.add(courseListItem);
-             }
+            }
+            //setting up recyclerView
             RecyclerView recyclerView = new RecyclerView(context);
             recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             recyclerView.setLayoutManager(new LinearLayoutManager(context));

@@ -20,11 +20,16 @@ public class JsoupViewBuilder {
     public static ArrayList<View> elementsBuilder(Elements eTs, Context context) {
         ArrayList<View> v = new ArrayList<>();
         for (Element e : eTs) {
+            //for all heading build small heading
             if (e.is("h1, h2, h3, h4, h5,h6")) {
                 v.add(smallHeadingFromElementBuilder(e, context));
-            } else if (e.is(".maintabletemplate , table")) {
+            }
+            //for these elements building table
+            else if (e.is(".maintabletemplate , table")) {
                 v.add(tableFromElementBuilder(e, context));
-            } else v.add(bodyTextViewFromElementBuilder(e, context));
+            }
+            //for anything else
+            else v.add(bodyTextViewFromElementBuilder(e, context));
         }
         return v;
     }

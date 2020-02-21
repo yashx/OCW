@@ -2,20 +2,12 @@ package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.util.JsoupElementCleaner;
 import com.github.yashx.mit_ocw.util.JsoupViewBuilder;
-import com.github.yashx.mit_ocw.util.SpannableStringMaker;
 import com.github.yashx.mit_ocw.util.ViewBuilders;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -70,7 +61,7 @@ public class DepartmentHomeFragment extends Fragment {
         String html = getArguments().getString("html");
         Document doc = Jsoup.parse(html);
 
-        //getting links and setting up chips
+        //getting side links and setting up chips
         eTs = doc.select("#parent-fieldname-bottom_text_1 > ul > li");
         if (eTs != null) {
             ChipGroup cp = new ChipGroup(context);
@@ -104,8 +95,8 @@ public class DepartmentHomeFragment extends Fragment {
         if (eTs != null) {
             eTs = JsoupElementCleaner.elementsCleaner(eTs);
             linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Description"));
-            ArrayList<View> vs = JsoupViewBuilder.elementsBuilder(eTs,context);
-            for(View v:vs)
+            ArrayList<View> vs = JsoupViewBuilder.elementsBuilder(eTs, context);
+            for (View v : vs)
                 linearLayout.addView(v);
         }
     }

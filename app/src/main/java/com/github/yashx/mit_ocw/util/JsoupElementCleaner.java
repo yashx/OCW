@@ -47,7 +47,7 @@ public class JsoupElementCleaner {
                 el.remove();
             }
 
-            //replaces all relative links with absolute links to open them easily
+            //replaces all relative links with absolute links to allow user open them easily from fragment
             eTs = eT.select("a");
             if (eTs != null) {
                 for (org.jsoup.nodes.Element el : eTs) {

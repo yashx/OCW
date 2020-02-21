@@ -25,11 +25,11 @@ import org.jsoup.select.Elements;
 
 public class CourseHomeFragment extends Fragment {
 
-    private Context c;
+    private Context context;
 
     public static CourseHomeFragment newInstance(Document doc) {
         Bundle args = new Bundle();
-        //storing document instead of url to not load page twice
+        //storing document as html to recover it later
         args.putString("html", doc.html());
         CourseHomeFragment fragment = new CourseHomeFragment();
         fragment.setArguments(args);
@@ -45,7 +45,8 @@ public class CourseHomeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.c = context;
+        //storing context here as getContext() gives null sometimes
+        this.context = context;
     }
 
     @Override
@@ -54,13 +55,15 @@ public class CourseHomeFragment extends Fragment {
         LinearLayout linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
         Element eT;
         Elements eTs;
+
+        //retrieving doc from html
         String html = getArguments().getString("html");
         Document doc = Jsoup.parse(html);
 
         //getting related topics and setting up chips
         eTs = doc.select("#related > div > ul > li");
         if (eTs != null) {
-            ChipGroup cp = new ChipGroup(c);
+            ChipGroup cp = new ChipGroup(context);
             cp.setPadding(getDps(16f), getDps(8f), getDps(16f), getDps(0f));
             for (Element e : eTs) {
                 //getting absolute url (absUrl doesn't work as doc is loaded from html)
@@ -70,7 +73,7 @@ public class CourseHomeFragment extends Fragment {
                 if (s.contains(">")) {
                     s = s.substring(s.lastIndexOf(">") + 1);
                 }
-                Chip chip = new Chip(c);
+                Chip chip = new Chip(context);
                 chip.setText(s);
                 chip.setTag(url);
                 chip.setOnClickListener(new View.OnClickListener() {
@@ -85,42 +88,42 @@ public class CourseHomeFragment extends Fragment {
             linearLayout.addView(cp);
         }
 
-        //Getting Description
+        //getting Description
         eT = doc.selectFirst("#description > div > p");
         if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, "Description"));
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, eT.text().trim()));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Description"));
+            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, eT.text().trim()));
         }
 
-        //Getting Instructor
+        //getting Instructor
         eTs = doc.select("p.ins");
         if (eTs != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, eTs.size() != 1 ? "Instructors" : "Instructor"));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, eTs.size() != 1 ? "Instructors" : "Instructor"));
             StringBuilder sb = new StringBuilder();
             for (Element e : eTs) {
                 sb.append(e.text().trim()).append("\n");
             }
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, sb.toString().trim()));
+            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, sb.toString().trim()));
         }
 
-        //Getting Taught in
+        //getting sem
         eT = doc.selectFirst("p[itemprop=\"startDate\"]");
         if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, "As Taught In"));
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, eT.text().trim()));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "As Taught In"));
+            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, eT.text().trim()));
         }
 
-        //Getting Level
+        //getting Level
         eT = doc.selectFirst("p[itemprop=\"typicalAgeRange\"]");
         if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, "Level"));
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, eT.text().trim()));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Level"));
+            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, eT.text().trim()));
         }
     }
 
     //pixel to dp
     int getDps(float f) {
-        float s = c.getResources().getDisplayMetrics().density;
+        float s = context.getResources().getDisplayMetrics().density;
         return (int) (f * s + 0.5f);
     }
 }
