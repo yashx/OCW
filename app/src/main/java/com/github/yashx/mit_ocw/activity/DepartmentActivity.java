@@ -36,19 +36,29 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
     private Document doc;
     private ArrayList<CourseListItem> courseListItemArrayList;
     private ArrayList<String> urlList;
+    private DepartmentHomeFragment departmentHomeFragment;
+    private DepartmentFeaturedCoursesFragment departmentFeaturedCoursesFragment;
+    private DepartmentAllCoursesFragment departmentAllCoursesFragment;
+
     @Override
     public void onTabPressed(Object tabTag) {
         Fragment currentFragment;
         switch ((String) tabTag) {
             default:
             case "home":
-                currentFragment = DepartmentHomeFragment.newInstance(doc);
+                if (departmentHomeFragment == null)
+                    departmentHomeFragment = DepartmentHomeFragment.newInstance(doc);
+                currentFragment = departmentHomeFragment;
                 break;
             case "Featured Courses":
-                currentFragment = DepartmentFeaturedCoursesFragment.newInstance(urlList);
+                if (departmentFeaturedCoursesFragment == null)
+                    departmentFeaturedCoursesFragment = DepartmentFeaturedCoursesFragment.newInstance(urlList);
+                currentFragment = departmentFeaturedCoursesFragment;
                 break;
             case "All Courses":
-                currentFragment = DepartmentAllCoursesFragment.newInstance(courseListItemArrayList);
+                if (departmentAllCoursesFragment == null)
+                    departmentAllCoursesFragment = DepartmentAllCoursesFragment.newInstance(courseListItemArrayList);
+                currentFragment = departmentAllCoursesFragment;
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity, currentFragment).commit();
