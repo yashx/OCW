@@ -13,13 +13,19 @@ public class CourseListItem implements Serializable {
 
     public static CourseListItem fromJson(String json) {
         Gson gson = new Gson();
-        return gson.fromJson(json, CourseListItem.class);
+        CourseListItem courseListItem = gson.fromJson(json, CourseListItem.class);
+        courseListItem.setHrefFromThumb();
+        return courseListItem;
     }
 
     public CourseListItem(String title,String mcn, String sem,String href) {
         this.title = title;
         this.mcn = mcn;
         this.sem = sem;
+        if (!href.contains("https://"))
+            href = "https://ocw.mit.edu" + href;
+        if (!href.endsWith("/"))
+            href += "/";
         this.href = href;
     }
 
@@ -28,9 +34,20 @@ public class CourseListItem implements Serializable {
         this.thumb = thumb;
         this.mcn = mcn;
         this.sem = sem;
+        if (!href.contains("https://"))
+            href = "https://ocw.mit.edu" + href;
+        if (!href.endsWith("/"))
+            href += "/";
         this.href = href;
     }
 
+    public  void setHrefFromThumb(){
+            href = thumb.substring(0,thumb.lastIndexOf("/"));
+        if (!href.contains("https://"))
+            href = "https://ocw.mit.edu" + href;
+        if (!href.endsWith("/"))
+            href += "/";
+    }
     public void setThumb(String thumb) {
         this.thumb = thumb;
     }
@@ -55,6 +72,10 @@ public class CourseListItem implements Serializable {
     }
 
     public String getHref() {
+        if (!href.contains("https://"))
+            href = "https://ocw.mit.edu" + href;
+        if (!href.endsWith("/"))
+            href += "/";
         return href;
     }
 

@@ -46,18 +46,29 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
         switch ((String) tabTag) {
             default:
             case "home":
-                if (departmentHomeFragment == null)
+                if (departmentHomeFragment == null) {
                     departmentHomeFragment = DepartmentHomeFragment.newInstance(doc);
+                    departmentHomeFragment.setRetainInstance(true);
+                    System.out.println("making");
+                }
                 currentFragment = departmentHomeFragment;
                 break;
             case "Featured Courses":
-                if (departmentFeaturedCoursesFragment == null)
+                if (departmentFeaturedCoursesFragment == null) {
                     departmentFeaturedCoursesFragment = DepartmentFeaturedCoursesFragment.newInstance(urlList);
+                    departmentFeaturedCoursesFragment.setRetainInstance(true);
+                    System.out.println("making");
+
+                }
                 currentFragment = departmentFeaturedCoursesFragment;
                 break;
             case "All Courses":
-                if (departmentAllCoursesFragment == null)
+                if (departmentAllCoursesFragment == null) {
                     departmentAllCoursesFragment = DepartmentAllCoursesFragment.newInstance(courseListItemArrayList);
+                    departmentAllCoursesFragment.setRetainInstance(true);
+                    System.out.println("making");
+
+                }
                 currentFragment = departmentAllCoursesFragment;
                 break;
         }
@@ -134,8 +145,8 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
-                    .replace(R.id.frameLayoutCommonActivity, DepartmentHomeFragment.newInstance(document))
                     .commit();
+            onTabPressed("home");
 
         }
 
@@ -154,7 +165,7 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
             //getting All Courses
             Elements eTs = doc.select("#global_inner > div.courseListDiv > ul > li:not(.courseListHeaderRow)");
             if (eTs != null) {
-                courseListItems = new ArrayList<>();
+                courseListItems = new ArrayList<>(eTs.size());
                 for (Element e : eTs) {
                     String href;
                     final CourseListItem courseListItem;
@@ -180,9 +191,9 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
             }
 
             //getting Featured Courses
-            urls = new ArrayList<>();
             eTs = doc.select("#carousel_ul .item");
             if (eTs != null) {
+                urls = new ArrayList<>(eTs.size());
                 for (Element e : eTs) {
                     //getting absolute url (absUrl doesn't work as doc is loaded from html)
                     String url = e.selectFirst("a").attr("href");

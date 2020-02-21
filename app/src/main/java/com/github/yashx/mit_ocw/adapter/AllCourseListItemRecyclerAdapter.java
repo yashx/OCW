@@ -1,5 +1,6 @@
 package com.github.yashx.mit_ocw.adapter;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.activity.CourseActivity;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -59,11 +61,19 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
 
     @Override
     public void onBindViewHolder(@NonNull CourseListItemViewHolder holder, int position) {
-        CourseListItem courseListItem = courses.get(position);
+        final CourseListItem courseListItem = courses.get(position);
         holder.courseTitle.setText(courseListItem.getTitle());
         holder.courseSubtitle.setText(courseListItem.getSubtitle());
         (holder.courseThumbImage).setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
         (holder.courseThumbImage).setMinimumWidth((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), CourseActivity.class);
+                i.putExtra(v.getContext().getResources().getString(R.string.urlExtra), courseListItem.getHref());
+                v.getContext().startActivity(i);
+            }
+        });
 
         String url = courseListItem.getHref();
 

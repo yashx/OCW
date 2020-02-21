@@ -1,6 +1,7 @@
 package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.activity.CourseActivity;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.squareup.picasso.Picasso;
 
@@ -78,7 +80,7 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
             super.onPostExecute(json);
 
             //object from model class
-            CourseListItem courseListItem;
+            final CourseListItem courseListItem;
             courseListItem = CourseListItem.fromJson(json);
 
             //inflating listitem_course and adding it to fragment
@@ -86,6 +88,14 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
             ((TextView) v.findViewById(R.id.titleTextViewCourseListItem)).setText(courseListItem.getTitle());
             ((TextView) v.findViewById(R.id.subTitleTextViewCourseListItem)).setText(courseListItem.getSubtitle());
             Picasso.get().load(courseListItem.getThumb()).into(((ImageView) v.findViewById(R.id.imageViewCourseListItem)));
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(v.getContext(), CourseActivity.class);
+                    i.putExtra(v.getContext().getResources().getString(R.string.urlExtra), courseListItem.getHref());
+                    v.getContext().startActivity(i);
+                }
+            });
             (v.findViewById(R.id.imageViewCourseListItem)).setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
             (v.findViewById(R.id.imageViewCourseListItem)).setMinimumWidth((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
             linearLayout.addView(v);
