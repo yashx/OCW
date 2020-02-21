@@ -1,18 +1,28 @@
 package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.adapter.CourseListItemRecyclerAdapter;
+import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.github.yashx.mit_ocw.util.ViewBuilders;
+import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +34,7 @@ import java.util.ArrayList;
 public class DepartmentFeaturedCoursesFragment extends Fragment {
 
     private Context context;
+    private LinearLayout linearLayout;
 
     public static DepartmentFeaturedCoursesFragment newInstance(Document doc) {
         Bundle args = new Bundle();
@@ -49,14 +60,12 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LinearLayout linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
-        Element eT;
+        linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
         Elements eTs;
         String html = getArguments().getString("html");
         Document doc = Jsoup.parse(html);
 
         //getting Featured Courses
-        ArrayList<String> urls = new ArrayList<>();
         eTs = doc.select("#carousel_ul .item");
         if (eTs != null) {
             for (Element e : eTs) {
@@ -64,19 +73,42 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
                 String url = e.selectFirst("a").attr("href");
                 if (!url.contains("https://"))
                     url = "https://ocw.mit.edu" + url;
+                if (!url.endsWith("/"))
+                    url += "/";
                 int l = url.lastIndexOf("index.htm");
                 if (l != -1) {
-                    url = url.substring(0,l) + "index.json";
+                    url = url.substring(0, l) + "index.json";
                 }
-                urls.add(url);
+                new JsonFetcherAsync().execute(url);
             }
-            linearLayout.addView(ViewBuilders.SmallBodyMidTextView(context,urls.toString()));
         }
     }
 
-    //pixel to dp
-    int getDps(float f) {
-        float s = context.getResources().getDisplayMetrics().density;
-        return (int) (f * s + 0.5f);
+    class JsonFetcherAsync extends AsyncTask<String, String, String> {
+        @Override
+        protected String doInBackground(String... url) {
+            String s = url[0];
+            String json = "";
+            try {
+                json = (Jsoup.connect(s).ignoreContentType(true).execute().body());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(String json) {
+            super.onPostExecute(json);
+            CourseListItem courseListItem;
+            View v = LayoutInflater.from(context).inflate(R.layout.listitem_course, linearLayout, false);
+            courseListItem = CourseListItem.fromJson(json);
+            ((TextView) v.findViewById(R.id.titleTextViewCourseListItem)).setText(courseListItem.getTitle());
+            ((TextView) v.findViewById(R.id.subTitleTextViewCourseListItem)).setText(courseListItem.getSubtitle());
+            Picasso.get().load(courseListItem.getThumb()).into(((ImageView) v.findViewById(R.id.imageViewCourseListItem)));
+            (v.findViewById(R.id.imageViewCourseListItem)).setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
+            (v.findViewById(R.id.imageViewCourseListItem)).setMinimumWidth((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
+            linearLayout.addView(v);
+        }
     }
 }

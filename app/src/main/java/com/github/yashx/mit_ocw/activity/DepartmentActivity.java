@@ -80,7 +80,7 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
                 currentFragment = DepartmentFeaturedCoursesFragment.newInstance(doc);
                 break;
             case "All Courses":
-                currentFragment = DepartmentAllCoursesFragment.newInstance(url);
+                currentFragment = DepartmentAllCoursesFragment.newInstance(doc);
                 break;
 
         }
