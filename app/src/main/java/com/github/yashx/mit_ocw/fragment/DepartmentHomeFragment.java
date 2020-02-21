@@ -2,18 +2,29 @@ package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.util.JsoupElementCleaner;
+import com.github.yashx.mit_ocw.util.JsoupViewBuilder;
+import com.github.yashx.mit_ocw.util.SpannableStringMaker;
 import com.github.yashx.mit_ocw.util.ViewBuilders;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -23,15 +34,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class CourseHomeFragment extends Fragment {
+import java.util.ArrayList;
 
-    private Context c;
+public class DepartmentHomeFragment extends Fragment {
 
-    public static CourseHomeFragment newInstance(Document doc) {
+    private Context context;
+
+    public static DepartmentHomeFragment newInstance(Document doc) {
         Bundle args = new Bundle();
         //storing document instead of url to not load page twice
         args.putString("html", doc.html());
-        CourseHomeFragment fragment = new CourseHomeFragment();
+        DepartmentHomeFragment fragment = new DepartmentHomeFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +58,7 @@ public class CourseHomeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.c = context;
+        this.context = context;
     }
 
     @Override
@@ -57,20 +70,21 @@ public class CourseHomeFragment extends Fragment {
         String html = getArguments().getString("html");
         Document doc = Jsoup.parse(html);
 
-        //getting related topics and setting up chips
-        eTs = doc.select("#related > div > ul > li");
+        //getting links and setting up chips
+        eTs = doc.select("#parent-fieldname-bottom_text_1 > ul > li");
         if (eTs != null) {
-            ChipGroup cp = new ChipGroup(c);
+            ChipGroup cp = new ChipGroup(context);
             cp.setPadding(getDps(16f), getDps(8f), getDps(16f), getDps(0f));
             for (Element e : eTs) {
                 //getting absolute url (absUrl doesn't work as doc is loaded from html)
-                String url = "https://ocw.mit.edu" + e.selectFirst("a").attr("href");
-                System.out.println(url);
+                String url = e.selectFirst("a").attr("href");
+                if (!url.contains("https://"))
+                    url = "https://ocw.mit.edu" + url;
                 String s = e.text().trim();
                 if (s.contains(">")) {
                     s = s.substring(s.lastIndexOf(">") + 1);
                 }
-                Chip chip = new Chip(c);
+                Chip chip = new Chip(context);
                 chip.setText(s);
                 chip.setTag(url);
                 chip.setOnClickListener(new View.OnClickListener() {
@@ -86,41 +100,19 @@ public class CourseHomeFragment extends Fragment {
         }
 
         //Getting Description
-        eT = doc.selectFirst("#description > div > p");
-        if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, "Description"));
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, eT.text().trim()));
-        }
-
-        //Getting Instructor
-        eTs = doc.select("p.ins");
+        eTs = doc.select("main>p,main>.subhead");
         if (eTs != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, eTs.size() != 1 ? "Instructors" : "Instructor"));
-            StringBuilder sb = new StringBuilder();
-            for (Element e : eTs) {
-                sb.append(e.text().trim()).append("\n");
-            }
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, sb.toString().trim()));
-        }
-
-        //Getting Taught in
-        eT = doc.selectFirst("p[itemprop=\"startDate\"]");
-        if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, "As Taught In"));
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, eT.text().trim()));
-        }
-
-        //Getting Level
-        eT = doc.selectFirst("p[itemprop=\"typicalAgeRange\"]");
-        if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(c, "Level"));
-            linearLayout.addView(ViewBuilders.SmallBodyEndTextView(c, eT.text().trim()));
+            eTs = JsoupElementCleaner.elementsCleaner(eTs);
+            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Description"));
+            ArrayList<View> vs = JsoupViewBuilder.elementsBuilder(eTs,context);
+            for(View v:vs)
+                linearLayout.addView(v);
         }
     }
 
     //pixel to dp
     int getDps(float f) {
-        float s = c.getResources().getDisplayMetrics().density;
+        float s = context.getResources().getDisplayMetrics().density;
         return (int) (f * s + 0.5f);
     }
 }

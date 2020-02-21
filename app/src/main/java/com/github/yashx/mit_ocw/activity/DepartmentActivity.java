@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,13 +15,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.fragment.CourseHomeFragment;
-import com.github.yashx.mit_ocw.fragment.HtmlRendererCourseFragment;
+import com.github.yashx.mit_ocw.fragment.DepartmentAllCoursesFragment;
+import com.github.yashx.mit_ocw.fragment.DepartmentHomeFragment;
+import com.github.yashx.mit_ocw.fragment.DepartmentFeaturedCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
@@ -72,10 +71,21 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
     @Override
     public void onTabPressed(Object tabTag) {
         Fragment currentFragment;
-        if ((tabTag).equals("home"))
-            currentFragment = CourseHomeFragment.newInstance(doc);
-        else
-            currentFragment = HtmlRendererCourseFragment.newInstance((String) tabTag);
+        switch ((String) tabTag) {
+            default:
+            case "home":
+                currentFragment = DepartmentHomeFragment.newInstance(doc);
+                break;
+            case "Featured Courses":
+                currentFragment = DepartmentFeaturedCoursesFragment.newInstance(doc);
+                break;
+            case "All Courses":
+                currentFragment = DepartmentAllCoursesFragment.newInstance(url);
+                break;
+
+        }
+//        else
+//            currentFragment = HtmlRendererCourseFragment.newInstance((String) tabTag);
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity, currentFragment).commit();
     }
 
@@ -85,35 +95,23 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
             super.onPostExecute(document);
 
             doc = document;
-            String u = document.select("#chpImage > div.image > img").first().absUrl("src");
-            String t = document.select("#course_title > h1").first().text();
+            String u = document.select("#global_inner > img").first().absUrl("src");
+            String t = document.select("#parent-fieldname-title").first().text();
             ArrayList<String> tabNames = new ArrayList<>();
             ArrayList<String> tabTags = new ArrayList<>();
 
-            int i = 0;
-            for (Element e : document.select("#course_nav > ul > li")) {
-                Element el = e.selectFirst(".tlp_links");
-                String selector = el == null ? "a" : "a:nth-child(2)";
+            tabNames.add("Home");
+            tabNames.add("Featured Courses");
+            tabNames.add("All Courses");
+            tabTags.add("Home");
+            tabTags.add("Featured Courses");
+            tabTags.add("All Courses");
 
-                if (e.selectFirst(selector) != null && !e.selectFirst(selector).text().isEmpty()) {
-                    if (i == 0) {
-                        i++;
-                        tabNames.add((e.selectFirst("a").text().trim()));
-                        tabTags.add("home");
-                    } else {
-                        String s = e.selectFirst(selector).text().trim().toLowerCase();
-                        if (!(s.contains("insight") || s.contains("download"))) {
-                            tabNames.add(s);
-                            tabTags.add(e.selectFirst(selector).absUrl("href"));
-                        }
-                    }
-                }
-            }
             ImageTextTabBarFragment imageTextTabBarFragment = ImageTextTabBarFragment.newInstance(u, t, tabNames, tabTags);
             imageTextTabBarFragment.setCallbacks(callbacks);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
-                    .replace(R.id.frameLayoutCommonActivity, CourseHomeFragment.newInstance(document))
+                    .replace(R.id.frameLayoutCommonActivity, DepartmentHomeFragment.newInstance(document))
                     .commit();
 
         }

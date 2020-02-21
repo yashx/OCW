@@ -21,8 +21,11 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(c, CourseActivity.class);
-                        i.putExtra(c.getResources().getString(R.string.urlExtra), ((EditText) findViewById(R.id.urlText)).getText().toString());
+                        String s = ((EditText) findViewById(R.id.urlText)).getText().toString();
+                        Intent i;
+//                            i = new Intent(c, CourseActivity.class);
+                            i = new Intent(c, DepartmentActivity.class);
+                        i.putExtra(c.getResources().getString(R.string.urlExtra), s);
                         startActivity(i);
                     }
                 }

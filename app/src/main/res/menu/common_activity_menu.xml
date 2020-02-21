@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title="Open in browser"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_public_black_24dp"
         android:id="@+id/openInBrowserMenuItem"/>
 </menu>
