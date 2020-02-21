@@ -19,9 +19,12 @@ import com.github.yashx.mit_ocw.fragment.DepartmentAllCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentFeaturedCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentHomeFragment;
 import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
+import com.github.yashx.mit_ocw.model.CourseListItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
@@ -31,7 +34,8 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
     private String url;
     private ImageTextTabBarFragment.Callbacks callbacks;
     private Document doc;
-
+    private ArrayList<CourseListItem> courseListItemArrayList;
+    private ArrayList<String> urlList;
     @Override
     public void onTabPressed(Object tabTag) {
         Fragment currentFragment;
@@ -41,10 +45,10 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
                 currentFragment = DepartmentHomeFragment.newInstance(doc);
                 break;
             case "Featured Courses":
-                currentFragment = DepartmentFeaturedCoursesFragment.newInstance(doc);
+                currentFragment = DepartmentFeaturedCoursesFragment.newInstance(urlList);
                 break;
             case "All Courses":
-                currentFragment = DepartmentAllCoursesFragment.newInstance(doc);
+                currentFragment = DepartmentAllCoursesFragment.newInstance(courseListItemArrayList);
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity, currentFragment).commit();
@@ -89,9 +93,15 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
     }
 
     class JsoupDocumentAsyncLoader extends AsyncTask<String, String, Document> {
+        ArrayList<CourseListItem> courseListItems;
+        ArrayList<String> urls;
+
         @Override
         protected void onPostExecute(Document document) {
             super.onPostExecute(document);
+
+            courseListItemArrayList = courseListItems;
+            urlList = urls;
 
             doc = document;
             //finds department pic absolute url
@@ -130,6 +140,54 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
             } catch (Exception e) {
                 Log.e("TAG", "doInBackground: ", e);
             }
+
+            //getting All Courses
+            Elements eTs = doc.select("#global_inner > div.courseListDiv > ul > li:not(.courseListHeaderRow)");
+            if (eTs != null) {
+                courseListItems = new ArrayList<>();
+                for (Element e : eTs) {
+                    String href;
+                    final CourseListItem courseListItem;
+                    //getting absolute url (absUrl doesn't work as doc is loaded from html)
+                    String url = e.selectFirst("a").attr("href");
+
+                    if (!url.contains("https://"))
+                        url = "https://ocw.mit.edu" + url;
+                    if (!url.endsWith("/"))
+                        url += "/";
+                    href = url;
+
+                    courseListItem = new CourseListItem(
+                            e.attr("data-title"),
+                            e.attr("data-courseno"),
+                            e.attr("data-semester"),
+                            href
+                    );
+
+                    courseListItems.add(courseListItem);
+                }
+
+            }
+
+            //getting Featured Courses
+            urls = new ArrayList<>();
+            eTs = doc.select("#carousel_ul .item");
+            if (eTs != null) {
+                for (Element e : eTs) {
+                    //getting absolute url (absUrl doesn't work as doc is loaded from html)
+                    String url = e.selectFirst("a").attr("href");
+                    if (!url.contains("https://"))
+                        url = "https://ocw.mit.edu" + url;
+                    if (!url.endsWith("/"))
+                        url += "/";
+                    int l = url.lastIndexOf("index.htm");
+                    if (l != -1) {
+                        url = url.substring(0, l) + "index.json";
+                    }
+                    urls.add(url);
+                }
+            }
+
             return doc;
         }
     }

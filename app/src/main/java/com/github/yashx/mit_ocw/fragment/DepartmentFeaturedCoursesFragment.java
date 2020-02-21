@@ -20,19 +20,17 @@ import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
 
 public class DepartmentFeaturedCoursesFragment extends Fragment {
 
     private Context context;
     private LinearLayout linearLayout;
 
-    public static DepartmentFeaturedCoursesFragment newInstance(Document doc) {
+    public static DepartmentFeaturedCoursesFragment newInstance(ArrayList<String> urlList) {
         Bundle args = new Bundle();
-        //storing document instead of url to not load page twice
-        args.putString("html", doc.html());
+        args.putStringArrayList("html", urlList);
         DepartmentFeaturedCoursesFragment fragment = new DepartmentFeaturedCoursesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -54,27 +52,11 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
-        Elements eTs;
-        String html = getArguments().getString("html");
-        Document doc = Jsoup.parse(html);
 
-        //getting Featured Courses
-        eTs = doc.select("#carousel_ul .item");
-        if (eTs != null) {
-            for (Element e : eTs) {
-                //getting absolute url (absUrl doesn't work as doc is loaded from html)
-                String url = e.selectFirst("a").attr("href");
-                if (!url.contains("https://"))
-                    url = "https://ocw.mit.edu" + url;
-                if (!url.endsWith("/"))
-                    url += "/";
-                int l = url.lastIndexOf("index.htm");
-                if (l != -1) {
-                    url = url.substring(0, l) + "index.json";
-                }
-                new JsonFetcherAsync().execute(url);
-            }
-        }
+        ArrayList<String> urlList = getArguments().getStringArrayList("html");
+        for (String url : urlList)
+            new JsonFetcherAsync().execute(url);
+
     }
 
     class JsonFetcherAsync extends AsyncTask<String, String, String> {

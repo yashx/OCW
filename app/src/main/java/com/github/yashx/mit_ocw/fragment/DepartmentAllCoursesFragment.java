@@ -17,11 +17,6 @@ import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.adapter.AllCourseListItemRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 
 public class DepartmentAllCoursesFragment extends Fragment {
@@ -29,10 +24,9 @@ public class DepartmentAllCoursesFragment extends Fragment {
     private Context context;
     private LinearLayout linearLayout;
 
-    public static DepartmentAllCoursesFragment newInstance(Document doc) {
+    public static DepartmentAllCoursesFragment newInstance(ArrayList<CourseListItem> courseListItemArrayList) {
         Bundle args = new Bundle();
-        //storing document instead of url to not load page twice
-        args.putString("html", doc.html());
+        args.putSerializable("html", courseListItemArrayList);
         DepartmentAllCoursesFragment fragment = new DepartmentAllCoursesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -54,42 +48,13 @@ public class DepartmentAllCoursesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
-        Elements eTs;
-        String html = getArguments().getString("html");
-        Document doc = Jsoup.parse(html);
+        ArrayList<CourseListItem> courseListItems = (ArrayList<CourseListItem>) getArguments().getSerializable("html");
 
-        int i = 0;
-        //getting All Courses
-        eTs = doc.select("#global_inner > div.courseListDiv > ul > li:not(.courseListHeaderRow)");
-        if (eTs != null) {
-            ArrayList<CourseListItem> courseListItems = new ArrayList<>();
-            for (Element e : eTs) {
-                String href;
-                final CourseListItem courseListItem;
-                //getting absolute url (absUrl doesn't work as doc is loaded from html)
-                String url = e.selectFirst("a").attr("href");
-
-                if (!url.contains("https://"))
-                    url = "https://ocw.mit.edu" + url;
-                if (!url.endsWith("/"))
-                    url += "/";
-                href = url;
-
-                courseListItem = new CourseListItem(
-                        e.attr("data-title"),
-                        e.attr("data-courseno"),
-                        e.attr("data-semester"),
-                        href
-                );
-
-                courseListItems.add(courseListItem);
-            }
-            //setting up recyclerView
-            RecyclerView recyclerView = new RecyclerView(context);
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new AllCourseListItemRecyclerAdapter(courseListItems));
-            linearLayout.addView(recyclerView);
-        }
+        //setting up recyclerView
+        RecyclerView recyclerView = new RecyclerView(context);
+        recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new AllCourseListItemRecyclerAdapter(courseListItems));
+        linearLayout.addView(recyclerView);
     }
 }

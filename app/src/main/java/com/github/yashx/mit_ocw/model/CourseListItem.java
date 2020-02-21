@@ -2,7 +2,9 @@ package com.github.yashx.mit_ocw.model;
 
 import com.google.gson.Gson;
 
-public class CourseListItem {
+import java.io.Serializable;
+
+public class CourseListItem implements Serializable {
     String title;
     String thumb;
     String mcn;

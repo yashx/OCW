@@ -109,6 +109,7 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
             if (!s.contains("https://"))
                 s = "https://ocw.mit.edu" + s;
 
+
             Picasso.get().load(s).error(android.R.drawable.stat_notify_error).into(imageView);
         }
     }
