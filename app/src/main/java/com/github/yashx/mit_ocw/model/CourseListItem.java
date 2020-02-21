@@ -7,26 +7,26 @@ public class CourseListItem {
     String thumb;
     String mcn;
     String sem;
-    String id;
+    String href;
 
     public static CourseListItem fromJson(String json) {
         Gson gson = new Gson();
         return gson.fromJson(json, CourseListItem.class);
     }
 
-    public CourseListItem(String title,String mcn, String sem, String id) {
+    public CourseListItem(String title,String mcn, String sem,String href) {
         this.title = title;
         this.mcn = mcn;
         this.sem = sem;
-        this.id = id;
+        this.href = href;
     }
 
-    public CourseListItem(String title, String mcn, String sem, String id,String thumb) {
+    public CourseListItem(String title, String mcn, String sem,String href, String thumb) {
         this.title = title;
         this.thumb = thumb;
         this.mcn = mcn;
         this.sem = sem;
-        this.id = id;
+        this.href = href;
     }
 
     public void setThumb(String thumb) {
@@ -52,11 +52,12 @@ public class CourseListItem {
         return mcn;
     }
 
+    public String getHref() {
+        return href;
+    }
+
     public String getSem() {
         return sem;
     }
 
-    public String getId() {
-        return id;
-    }
 }

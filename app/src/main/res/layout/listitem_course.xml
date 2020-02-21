@@ -22,9 +22,9 @@
             android:id="@+id/imageViewCourseListItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/design_default_color_background"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/place"
-            tools:srcCompat="@drawable/place" />
+            tools:srcCompat="@tools:sample/avatars[14]" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:paddingTop="8dp"
         android:text="@string/courseTitlePlaceholder"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="24sp"
@@ -48,6 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:paddingBottom="8dp"
         android:text="TextView"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
