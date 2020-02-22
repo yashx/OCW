@@ -98,7 +98,7 @@ public class ShowDepartmentActivity extends AppCompatActivity implements ImageTe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_common);
+        setContentView(R.layout.activity_common_showdepartment_showcourse);
 
 
         Toolbar toolbar = findViewById(R.id.toolbarCommonActivity);

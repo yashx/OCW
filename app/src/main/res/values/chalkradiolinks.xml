@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--name and url should be in order. Drawables should have underscore instead of space and also be in lowercase.-->
+<resources>
+    <string-array name="platforms">
+        <item>Apple Podcasts</item>
+        <item>Google Podcasts</item>
+        <item>Spotify</item>
+        <item>Breaker</item>
+        <item>iHeart Radio</item>
+        <item>Overcast</item>
+        <item>Pocket Casts</item>
+        <item>Radio Public</item>
+        <item>Tune In</item>
+    </string-array>
+
+    <string-array name="platformUrls">
+        <item>https://podcasts.apple.com/us/podcast/chalk-radio/id1497545103</item>
+        <item>https://www.google.com/podcasts?feed=aHR0cHM6Ly9mZWVkcy5zaW1wbGVjYXN0LmNvbS84ZlFkUzZEeA%3D%3D</item>
+        <item>https://open.spotify.com/show/1t1avufyB1cZMtg82YeQtQ?si=yXmLsWM6QHidQ2uPVV7DMA</item>
+        <item>https://www.breaker.audio/chalk-radio</item>
+        <item>https://www.iheart.com/podcast/269-chalk-radio-57127352/</item>
+        <item>https://overcast.fm/itunes1497545103/chalk-radio</item>
+        <item>https://pca.st/xq0i9b3t</item>
+        <item>https://radiopublic.com/chalk-radio-WJ27Zl</item>
+        <item>http://tun.in/pjIV7</item>
+    </string-array>
+</resources>

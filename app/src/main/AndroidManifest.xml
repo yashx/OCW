@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.DepartmentListActivity"></activity>
+        <activity android:name=".activity.ChalkRadioActivity"></activity>
+        <activity android:name=".activity.DepartmentListActivity" />
         <activity android:name=".activity.ShowCourseActivity" />
         <activity android:name=".activity.ShowDepartmentActivity" />
         <activity android:name=".activity.MainActivity">

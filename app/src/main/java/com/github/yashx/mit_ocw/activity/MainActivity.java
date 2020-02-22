@@ -26,6 +26,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        findViewById(R.id.podcastCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(),ChalkRadioActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
+
 //        findViewById(R.id.urlButton).setOnClickListener(
 //                new View.OnClickListener() {
 //                    @Override

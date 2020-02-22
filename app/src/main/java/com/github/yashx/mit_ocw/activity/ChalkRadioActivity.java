@@ -1,22 +1,22 @@
 package com.github.yashx.mit_ocw.activity;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.adapter.DepartmentListRecyclerAdapter;
-import com.github.yashx.mit_ocw.util.LoadJsonFromAsset;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
+import android.os.Bundle;
+import android.view.MenuItem;
 
-public class DepartmentListActivity extends AppCompatActivity {
+import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.adapter.ChalkRadioLinksAdapter;
+
+import java.util.ArrayList;
+
+public class ChalkRadioActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -28,10 +28,9 @@ public class DepartmentListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_department_list);
+        setContentView(R.layout.activity_chalk_radio);
 
-
-        Toolbar toolbar = findViewById(R.id.toolbarDepartmentList);
+        Toolbar toolbar = findViewById(R.id.toolbarChalkRadio);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -41,16 +40,11 @@ public class DepartmentListActivity extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        String json = LoadJsonFromAsset.load(this, "depts.json");
-        try {
-            JsonArray jsonArray = (new Gson()).fromJson(json, JsonArray.class);
+        String[] platforms = getResources().getStringArray(R.array.platforms);
+        String[] platformUrls = getResources().getStringArray(R.array.platformUrls);
 
-            RecyclerView recyclerView = findViewById(R.id.recyclerViewDepartmentList);
-            recyclerView.setAdapter(new DepartmentListRecyclerAdapter(jsonArray));
-            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewChalkRadio);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
+        recyclerView.setAdapter(new ChalkRadioLinksAdapter(platforms,platformUrls));
     }
 }

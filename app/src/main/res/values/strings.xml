@@ -5,4 +5,8 @@
     <string name="courseDesc">Description</string>
     <string name="courseInstructor">Instructor</string>
 
+    <string name="chalkRadioDesc">Chalk Radio is an MIT OpenCourseWare podcast about inspired teaching at MIT. They take you behind the scenes of some of the most interesting courses on campus to talk with the professors who make those courses possible. Their guests open up to us about the passions that drive their cutting-edge research and innovative teaching, sharing stories that are candid, funny, serious, personal, and full of insights. Listening in on these conversations is like being right there in person under the MIT dome, talking with your favorite professors. Hosted by Dr. Sarah Hansen. New episode every other Wednesday, starting February 19, 2020.</string>
+
+
+
 </resources>
