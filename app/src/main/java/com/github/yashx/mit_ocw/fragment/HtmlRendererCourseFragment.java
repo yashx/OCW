@@ -2,6 +2,7 @@ package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -100,6 +101,8 @@ public class HtmlRendererCourseFragment extends Fragment {
                         Chip chip = new Chip(context);
                         chip.setText(s);
                         chip.setTag(url);
+                        chip.setChipBackgroundColorResource(R.color.colorViolet);
+                        chip.setTextColor(Color.WHITE);
                         chip.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

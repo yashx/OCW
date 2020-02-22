@@ -29,7 +29,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 //see course activity for explanations not given as most code is same
-public class DepartmentActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
+public class ShowDepartmentActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
 
     private String url;
     private ImageTextTabBarFragment.Callbacks callbacks;
@@ -110,7 +110,7 @@ public class DepartmentActivity extends AppCompatActivity implements ImageTextTa
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         url = getIntent().getStringExtra("urlExtra");
-        new DepartmentActivity.JsoupDocumentAsyncLoader().execute(url);
+        new ShowDepartmentActivity.JsoupDocumentAsyncLoader().execute(url);
     }
 
     class JsoupDocumentAsyncLoader extends AsyncTask<String, String, Document> {

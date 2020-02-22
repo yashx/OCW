@@ -3,4 +3,6 @@
     <color name="colorPrimary">#dddddd</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#dddddd</color>
+    <color name="colorViolet">#5603AD</color>
+    <color name="colorAfricanViolet">#9F84BD</color>
 </resources>

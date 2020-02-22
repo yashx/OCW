@@ -2,6 +2,7 @@ package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -77,6 +78,8 @@ public class DepartmentHomeFragment extends Fragment {
                 }
                 Chip chip = new Chip(context);
                 chip.setText(s);
+                chip.setChipBackgroundColorResource(R.color.colorViolet);
+                chip.setTextColor(Color.WHITE);
                 chip.setTag(url);
                 chip.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -94,7 +97,7 @@ public class DepartmentHomeFragment extends Fragment {
         eTs = doc.select("main>p,main>.subhead");
         if (eTs != null) {
             eTs = JsoupElementCleaner.elementsCleaner(eTs);
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Description"));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextViewWithDecorator(context, "Description"));
             ArrayList<View> vs = JsoupViewBuilder.elementsBuilder(eTs, context);
             for (View v : vs)
                 linearLayout.addView(v);

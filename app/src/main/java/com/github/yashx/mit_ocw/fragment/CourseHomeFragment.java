@@ -2,6 +2,7 @@ package com.github.yashx.mit_ocw.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,6 +77,8 @@ public class CourseHomeFragment extends Fragment {
                 Chip chip = new Chip(context);
                 chip.setText(s);
                 chip.setTag(url);
+                chip.setChipBackgroundColorResource(R.color.colorViolet);
+                chip.setTextColor(Color.WHITE);
                 chip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -91,14 +94,14 @@ public class CourseHomeFragment extends Fragment {
         //getting Description
         eT = doc.selectFirst("#description > div > p");
         if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Description"));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextViewWithDecorator(context, "Description"));
             linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, eT.text().trim()));
         }
 
         //getting Instructor
         eTs = doc.select("p.ins");
         if (eTs != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, eTs.size() != 1 ? "Instructors" : "Instructor"));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextViewWithDecorator(context, eTs.size() != 1 ? "Instructors" : "Instructor"));
             StringBuilder sb = new StringBuilder();
             for (Element e : eTs) {
                 sb.append(e.text().trim()).append("\n");
@@ -109,14 +112,14 @@ public class CourseHomeFragment extends Fragment {
         //getting sem
         eT = doc.selectFirst("p[itemprop=\"startDate\"]");
         if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "As Taught In"));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextViewWithDecorator(context, "As Taught In"));
             linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, eT.text().trim()));
         }
 
         //getting Level
         eT = doc.selectFirst("p[itemprop=\"typicalAgeRange\"]");
         if (eT != null) {
-            linearLayout.addView(ViewBuilders.SmallHeadingTextView(context, "Level"));
+            linearLayout.addView(ViewBuilders.SmallHeadingTextViewWithDecorator(context, "Level"));
             linearLayout.addView(ViewBuilders.SmallBodyEndTextView(context, eT.text().trim()));
         }
     }

@@ -25,7 +25,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-public class CourseActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
+public class ShowCourseActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
 
     private String url;
     private ImageTextTabBarFragment.Callbacks callbacks;

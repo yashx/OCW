@@ -22,7 +22,7 @@ public class JsoupViewBuilder {
         for (Element e : eTs) {
             //for all heading build small heading
             if (e.is("h1, h2, h3, h4, h5,h6")) {
-                v.add(smallHeadingFromElementBuilder(e, context));
+                v.add(smallHeadingWithDecoratorFromElementBuilder(e, context));
             }
             //for these elements building table
             else if (e.is(".maintabletemplate , table")) {
@@ -38,6 +38,15 @@ public class JsoupViewBuilder {
     public static View smallHeadingFromElementBuilder(Element e, Context context) {
         return ViewBuilders.SmallHeadingTextView(context, e.text().trim());
     }
+
+    public static View smallHeadingWithDecoratorFromElementBuilder(Element e, Context context) {
+        return ViewBuilders.SmallHeadingTextViewWithDecorator(context, e.text().trim());
+    }
+
+    public static View smallHeadingWithDecoratorFromElementBuilder(Element e, Context context,Boolean textFirst) {
+        return ViewBuilders.SmallHeadingTextViewWithDecorator(context, e.text().trim(),textFirst);
+    }
+
 
     //builds table
     public static View tableFromElementBuilder(Element e, Context context) {

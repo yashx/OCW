@@ -4,6 +4,6 @@
 
     <item android:title="Open in browser"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_public_black_24dp"
+        android:icon="@drawable/ic_public_white_24dp"
         android:id="@+id/openInBrowserMenuItem"/>
 </menu>

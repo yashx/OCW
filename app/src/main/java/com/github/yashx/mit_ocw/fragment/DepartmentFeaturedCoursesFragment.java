@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.activity.CourseActivity;
+import com.github.yashx.mit_ocw.activity.ShowCourseActivity;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.squareup.picasso.Picasso;
 
@@ -91,7 +91,7 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(v.getContext(), CourseActivity.class);
+                    Intent i = new Intent(v.getContext(), ShowCourseActivity.class);
                     i.putExtra(v.getContext().getResources().getString(R.string.urlExtra), courseListItem.getHref());
                     v.getContext().startActivity(i);
                 }

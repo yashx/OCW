@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.activity.CourseActivity;
+import com.github.yashx.mit_ocw.activity.ShowCourseActivity;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -69,7 +69,7 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), CourseActivity.class);
+                Intent i = new Intent(v.getContext(), ShowCourseActivity.class);
                 i.putExtra(v.getContext().getResources().getString(R.string.urlExtra), courseListItem.getHref());
                 v.getContext().startActivity(i);
             }

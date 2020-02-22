@@ -17,14 +17,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         final Context c = getApplicationContext();
         setContentView(R.layout.activity_home);
+        findViewById(R.id.deptListCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(),DepartmentListActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
 //        findViewById(R.id.urlButton).setOnClickListener(
 //                new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
 //                        String s = ((EditText) findViewById(R.id.urlText)).getText().toString();
 //                        Intent i;
-////                            i = new Intent(c, CourseActivity.class);
-//                            i = new Intent(c, DepartmentActivity.class);
+////                            i = new Intent(c, ShowCourseActivity.class);
+//                            i = new Intent(c, ShowDepartmentActivity.class);
 //                        i.putExtra(c.getResources().getString(R.string.urlExtra), s);
 //                        startActivity(i);
 //                    }
