@@ -16,19 +16,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Context c = getApplicationContext();
-        setContentView(R.layout.activity_main);
-        findViewById(R.id.urlButton).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String s = ((EditText) findViewById(R.id.urlText)).getText().toString();
-                        Intent i;
-//                            i = new Intent(c, CourseActivity.class);
-                            i = new Intent(c, DepartmentActivity.class);
-                        i.putExtra(c.getResources().getString(R.string.urlExtra), s);
-                        startActivity(i);
-                    }
-                }
-        );
+        setContentView(R.layout.activity_home);
+//        findViewById(R.id.urlButton).setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String s = ((EditText) findViewById(R.id.urlText)).getText().toString();
+//                        Intent i;
+////                            i = new Intent(c, CourseActivity.class);
+//                            i = new Intent(c, DepartmentActivity.class);
+//                        i.putExtra(c.getResources().getString(R.string.urlExtra), s);
+//                        startActivity(i);
+//                    }
+//                }
+//        );
     }
 }
