@@ -76,7 +76,7 @@ public class ViewBuilders {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, getDps(5), 1);
         layoutParams.setMargins(0, getDps(4), 0, 0);
         cardView.setLayoutParams(layoutParams);
-        cardView.setCardBackgroundColor(c.getResources().getColor(R.color.colorAfricanViolet));
+        cardView.setCardBackgroundColor(c.getResources().getColor(R.color.colorRed));
 
         textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
 

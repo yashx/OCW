@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Context c = getApplicationContext();
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
         findViewById(R.id.deptListCard).setOnClickListener(
                 new View.OnClickListener() {
                     @Override

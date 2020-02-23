@@ -11,7 +11,7 @@
         android:layout_height="5dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@color/colorAfricanViolet"
+        app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewChalkRadio2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +27,7 @@
         android:text="Listen On"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -35,7 +36,7 @@
         android:layout_height="5dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@color/colorAfricanViolet"
+        app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewChalkRadio"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +52,7 @@
         android:text="Chalk Radio"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarChalkRadio" />
 

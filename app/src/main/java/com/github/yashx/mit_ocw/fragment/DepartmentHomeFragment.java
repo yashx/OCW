@@ -78,7 +78,7 @@ public class DepartmentHomeFragment extends Fragment {
                 }
                 Chip chip = new Chip(context);
                 chip.setText(s);
-                chip.setChipBackgroundColorResource(R.color.colorViolet);
+                chip.setChipBackgroundColorResource(R.color.colorRed);
                 chip.setTextColor(Color.WHITE);
                 chip.setTag(url);
                 chip.setOnClickListener(new View.OnClickListener() {

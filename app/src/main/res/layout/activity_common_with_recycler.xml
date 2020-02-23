@@ -7,7 +7,7 @@
     tools:context=".activity.DepartmentListActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarDepartmentList"
+        android:id="@+id/toolbarCommonWithRecyler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
@@ -18,39 +18,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewDepartmentList"
+        android:id="@+id/textViewCommonWithRecyler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Departments"
+        android:text="CommonWithRecyler"
         android:textColor="@android:color/primary_text_dark"
-        android:textSize="30sp"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarDepartmentList" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:cardBackgroundColor="@color/colorAfricanViolet"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewDepartmentList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewDepartmentList"
-        app:layout_constraintTop_toTopOf="@+id/textViewDepartmentList" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCommonWithRecyler" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewDepartmentList"
+        android:id="@+id/recyclerViewCommonWithRecyler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDepartmentList"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCommonWithRecyler"
         tools:itemCount="10"
         tools:listitem="@layout/listitem_department" />
 </androidx.constraintlayout.widget.ConstraintLayout>

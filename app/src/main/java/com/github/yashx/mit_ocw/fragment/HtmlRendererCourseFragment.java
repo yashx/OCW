@@ -101,7 +101,7 @@ public class HtmlRendererCourseFragment extends Fragment {
                         Chip chip = new Chip(context);
                         chip.setText(s);
                         chip.setTag(url);
-                        chip.setChipBackgroundColorResource(R.color.colorViolet);
+                        chip.setChipBackgroundColorResource(R.color.colorRed);
                         chip.setTextColor(Color.WHITE);
                         chip.setOnClickListener(new View.OnClickListener() {
                             @Override
