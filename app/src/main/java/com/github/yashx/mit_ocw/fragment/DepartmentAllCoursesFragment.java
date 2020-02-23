@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.adapter.AllCourseListItemRecyclerAdapter;
+import com.github.yashx.mit_ocw.adapter.CourseListItemRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class DepartmentAllCoursesFragment extends Fragment {
         RecyclerView recyclerView = new RecyclerView(context);
         recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new AllCourseListItemRecyclerAdapter(courseListItems));
+        recyclerView.setAdapter(new CourseListItemRecyclerAdapter(courseListItems));
         linearLayout.addView(recyclerView);
     }
 }

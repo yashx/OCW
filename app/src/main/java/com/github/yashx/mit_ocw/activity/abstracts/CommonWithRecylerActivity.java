@@ -1,7 +1,8 @@
-package com.github.yashx.mit_ocw.activity;
+package com.github.yashx.mit_ocw.activity.abstracts;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,9 @@ public abstract class CommonWithRecylerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common_with_recycler);
 
+        ProgressBar progressBar = findViewById(R.id.progressBarCommonWithRecycler);
 
-        Toolbar toolbar = findViewById(R.id.toolbarCommonWithRecyler);
+        Toolbar toolbar = findViewById(R.id.toolbarCommonWithRecycler);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -36,14 +38,14 @@ public abstract class CommonWithRecylerActivity extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewCommonWithRecyler);
-        initRecyclerView(recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewCommonWithRecycler);
+        initRecyclerView(recyclerView,progressBar);
 
-        TextView textView = findViewById(R.id.textViewCommonWithRecyler);
+        TextView textView = findViewById(R.id.textViewCommonWithRecycler);
         textView.setText(getActivityTitle());
     }
 
-    abstract protected void initRecyclerView(RecyclerView recyclerView);
+    abstract protected void initRecyclerView(RecyclerView recyclerView,ProgressBar progressBar);
 
     abstract protected String getActivityTitle();
 }

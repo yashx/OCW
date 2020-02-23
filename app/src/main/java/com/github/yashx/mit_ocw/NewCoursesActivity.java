@@ -1,12 +1,14 @@
-package com.github.yashx.mit_ocw.activity;
+package com.github.yashx.mit_ocw;
 
-import android.view.View;
-import android.widget.ProgressBar;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecylerActivity;
 import com.github.yashx.mit_ocw.adapter.CourseListItemRecyclerAdapter;
@@ -16,14 +18,18 @@ import com.github.yashx.mit_ocw.viewmodel.CoursesViewModel;
 
 import java.util.ArrayList;
 
-public class PopularCoursesActivity extends CommonWithRecylerActivity {
+public class NewCoursesActivity extends CommonWithRecylerActivity {
+
     @Override
     protected void initRecyclerView(final RecyclerView recyclerView, final ProgressBar progressBar) {
-        CourseViewModelFactory factory =
-                new CourseViewModelFactory("https://ocw.mit.edu/courses/most-visited-courses/",
-                        "#course_wrapper > div.maintabletemplate > table > tbody > tr td:first-child a");
+        CourseViewModelFactory factory = new CourseViewModelFactory(
+                "https://ocw.mit.edu/courses/new-courses/",
+                "#course_wrapper   ul > li.courseListRow > ul li:first-child a"
+        );
+
         CoursesViewModel coursesViewModel = new ViewModelProvider(this,factory)
                 .get(CoursesViewModel.class);
+
         coursesViewModel.getCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
             @Override
             public void onChanged(ArrayList<CourseListItem> courseListItems) {
@@ -36,6 +42,6 @@ public class PopularCoursesActivity extends CommonWithRecylerActivity {
 
     @Override
     protected String getActivityTitle() {
-        return "Popular Courses";
+        return "New Courses";
     }
 }

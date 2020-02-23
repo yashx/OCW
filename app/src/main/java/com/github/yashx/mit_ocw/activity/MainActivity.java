@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.yashx.mit_ocw.NewCoursesActivity;
 import com.github.yashx.mit_ocw.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(v.getContext(),DepartmentListActivity.class);
+                        Intent i = new Intent(v.getContext(), DepartmentListActivity.class);
                         startActivity(i);
                     }
                 }
@@ -30,7 +31,37 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(v.getContext(),ChalkRadioActivity.class);
+                        Intent i = new Intent(v.getContext(), ChalkRadioActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
+
+        findViewById(R.id.popularCoursesCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), PopularCoursesActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
+
+        findViewById(R.id.newCoursesCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), NewCoursesActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
+
+        findViewById(R.id.scholarCoursesCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), ScholarCoursesActivity.class);
                         startActivity(i);
                     }
                 }

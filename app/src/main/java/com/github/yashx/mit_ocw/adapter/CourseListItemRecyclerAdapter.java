@@ -23,7 +23,7 @@ import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 
-public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCourseListItemRecyclerAdapter.CourseListItemViewHolder> {
+public class CourseListItemRecyclerAdapter extends RecyclerView.Adapter<CourseListItemRecyclerAdapter.CourseListItemViewHolder> {
     private ArrayList<CourseListItem> courses;
 
     class CourseListItemViewHolder extends RecyclerView.ViewHolder {
@@ -39,7 +39,7 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
         }
     }
 
-    public AllCourseListItemRecyclerAdapter(ArrayList<CourseListItem> courses) {
+    public CourseListItemRecyclerAdapter(ArrayList<CourseListItem> courses) {
         this.courses = courses;
     }
 
@@ -66,6 +66,7 @@ public class AllCourseListItemRecyclerAdapter extends RecyclerView.Adapter<AllCo
         holder.courseSubtitle.setText(courseListItem.getSubtitle());
         (holder.courseThumbImage).setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
         (holder.courseThumbImage).setMinimumWidth((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
+        (holder.courseThumbImage).setImageResource(android.R.color.transparent);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -16,13 +16,14 @@ import com.github.yashx.mit_ocw.viewmodel.CoursesViewModel;
 
 import java.util.ArrayList;
 
-public class PopularCoursesActivity extends CommonWithRecylerActivity {
+public class ScholarCoursesActivity extends CommonWithRecylerActivity {
+
     @Override
     protected void initRecyclerView(final RecyclerView recyclerView, final ProgressBar progressBar) {
         CourseViewModelFactory factory =
-                new CourseViewModelFactory("https://ocw.mit.edu/courses/most-visited-courses/",
-                        "#course_wrapper > div.maintabletemplate > table > tbody > tr td:first-child a");
-        CoursesViewModel coursesViewModel = new ViewModelProvider(this,factory)
+                new CourseViewModelFactory("https://ocw.mit.edu/courses/ocw-scholar/",
+                        "div.scmod> a");
+        CoursesViewModel coursesViewModel = new ViewModelProvider(this, factory)
                 .get(CoursesViewModel.class);
         coursesViewModel.getCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
             @Override
@@ -36,6 +37,6 @@ public class PopularCoursesActivity extends CommonWithRecylerActivity {
 
     @Override
     protected String getActivityTitle() {
-        return "Popular Courses";
+        return "Scholar Courses";
     }
 }
