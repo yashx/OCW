@@ -10,7 +10,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/codeTextViewCourseListItemNoImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -43,8 +43,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/subTitleTextViewCourseListItem"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView"
+        app:layout_constraintStart_toEndOf="@+id/codeTextViewCourseListItemNoImage"
+        app:layout_constraintTop_toTopOf="@+id/codeTextViewCourseListItemNoImage"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
@@ -55,7 +55,7 @@
         android:paddingBottom="8dp"
         android:text="TextView"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintBottom_toBottomOf="@+id/codeTextViewCourseListItemNoImage"
         app:layout_constraintEnd_toEndOf="@+id/titleTextViewCourseListItem"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/titleTextViewCourseListItem"

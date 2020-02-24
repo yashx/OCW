@@ -4,25 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ChalkRadioActivity">
+    tools:context=".activity.ContributeActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+        android:id="@+id/cardView5"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewChalkRadio2"
-        app:layout_constraintStart_toStartOf="@+id/textViewChalkRadio2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewChalkRadio2" />
+        app:layout_constraintEnd_toEndOf="@+id/textViewContribute2"
+        app:layout_constraintStart_toStartOf="@+id/textViewContribute2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContribute2" />
 
     <TextView
-        android:id="@+id/textViewChalkRadio2"
+        android:id="@+id/textViewContribute2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/listenOn"
+        android:text="@string/ocwContribute"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -30,30 +30,30 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewCourseListItemNoImage"
+        android:id="@+id/cardView4"
         android:layout_width="0dp"
         android:layout_height="5dp"
         app:cardBackgroundColor="@color/colorRed"
         app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewChalkRadio"
-        app:layout_constraintStart_toStartOf="@+id/textViewChalkRadio"
-        app:layout_constraintTop_toBottomOf="@+id/textViewChalkRadio" />
+        app:layout_constraintEnd_toEndOf="@+id/textViewContribute"
+        app:layout_constraintStart_toStartOf="@+id/textViewContribute"
+        app:layout_constraintTop_toBottomOf="@+id/textViewContribute" />
 
     <TextView
-        android:id="@+id/textViewChalkRadio"
+        android:id="@+id/textViewContribute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/chalkRadio"
+        android:text="@string/appContribute"
         android:textColor="@android:color/primary_text_dark"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarChalkRadio" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarContribute" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarChalkRadio"
+        android:id="@+id/toolbarContribute"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
@@ -70,23 +70,25 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/chalkRadioDesc"
+        android:autoLink="web"
+        android:text="@string/appContributeDesc"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewCourseListItemNoImage" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewChalkRadio"
+    <TextView
+        android:id="@+id/textView60"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:autoLink="web"
+        android:text="@string/ocwContributeDesc"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3"
-        tools:itemCount="10"
-        tools:listitem="@layout/listitem_chalk_radio_link" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

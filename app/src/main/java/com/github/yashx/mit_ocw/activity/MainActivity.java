@@ -7,7 +7,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.yashx.mit_ocw.NewCoursesActivity;
 import com.github.yashx.mit_ocw.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -67,18 +66,24 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-//        findViewById(R.id.urlButton).setOnClickListener(
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        String s = ((EditText) findViewById(R.id.urlText)).getText().toString();
-//                        Intent i;
-////                            i = new Intent(c, ShowCourseActivity.class);
-//                            i = new Intent(c, ShowDepartmentActivity.class);
-//                        i.putExtra(c.getResources().getString(R.string.urlExtra), s);
-//                        startActivity(i);
-//                    }
-//                }
-//        );
+        findViewById(R.id.contributeCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), ContributeActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
+
+        findViewById(R.id.allCoursesCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), AllCoursesActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
     }
 }

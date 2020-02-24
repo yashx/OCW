@@ -42,10 +42,7 @@ public class JsoupViewBuilder {
     public static View smallHeadingWithDecoratorFromElementBuilder(Element e, Context context) {
         return ViewBuilders.SmallHeadingTextViewWithDecorator(context, e.text().trim());
     }
-
-    public static View smallHeadingWithDecoratorFromElementBuilder(Element e, Context context,Boolean textFirst) {
-        return ViewBuilders.SmallHeadingTextViewWithDecorator(context, e.text().trim(),textFirst);
-    }
+    
 
 
     //builds table

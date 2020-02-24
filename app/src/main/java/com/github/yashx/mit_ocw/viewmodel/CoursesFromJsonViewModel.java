@@ -17,12 +17,12 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class CoursesViewModel extends ViewModel {
+public class CoursesFromJsonViewModel extends ViewModel {
     private MutableLiveData<ArrayList<CourseListItem>> courses;
     private AsyncTask asyncTask;
 
-    public CoursesViewModel(String urlToLoad, String selectorToAnchorTag) {
-        asyncTask = new PopularCoursesAsyncTask(urlToLoad,selectorToAnchorTag).execute();
+    public CoursesFromJsonViewModel(String urlToLoad, String selectorToAnchorTag) {
+        asyncTask = new CoursesFromJsonAsyncTask(urlToLoad,selectorToAnchorTag).execute();
     }
 
     public LiveData<ArrayList<CourseListItem>> getCourses() {
@@ -32,20 +32,20 @@ public class CoursesViewModel extends ViewModel {
         return courses;
     }
 
-    private class PopularCoursesAsyncTask extends AsyncTask<Void, Void, ArrayList<CourseListItem>> {
+    private class CoursesFromJsonAsyncTask extends AsyncTask<Void, ArrayList<CourseListItem>, ArrayList<CourseListItem>> {
         private String urlToLoad;
         private String selectorToAnchorTag;
 
-        PopularCoursesAsyncTask(String urlToLoad, String selectorToAnchorTag) {
+        CoursesFromJsonAsyncTask(String urlToLoad, String selectorToAnchorTag) {
             this.urlToLoad = urlToLoad;
             this.selectorToAnchorTag = selectorToAnchorTag;
         }
 
         @Override
         protected void onPostExecute(ArrayList<CourseListItem> courseListItems) {
-            super.onPostExecute(courseListItems);
             courses.setValue(courseListItems);
         }
+
 
         @Override
         protected ArrayList<CourseListItem> doInBackground(Void... voids) {
@@ -61,10 +61,9 @@ public class CoursesViewModel extends ViewModel {
                         url += "/";
                     url = url + "index.json";
 
-                    Log.e(TAG, "doInBackground: " + url);
                     String json = Jsoup.connect(url).ignoreContentType(true).execute().body();
-                    Log.e(TAG, "doInBackground: " + json);
                     courseListItems.add(CourseListItem.fromJson(json));
+                    Log.e(TAG, "doInBackground: "+json );
                 }
             } catch (Exception e) {
                 e.printStackTrace();

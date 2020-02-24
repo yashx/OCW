@@ -64,34 +64,23 @@ public class ViewBuilders {
     }
 
     public static LinearLayout SmallHeadingTextViewWithDecorator(Context c, String s) {
-        return SmallHeadingTextViewWithDecorator(c, s, true);
-    }
-
-    public static LinearLayout SmallHeadingTextViewWithDecorator(Context c, String s, Boolean textFirst) {
         context = c;
         TextView textView = SmallHeadingTextView(c, s);
 
         CardView cardView = new CardView(c);
         cardView.setRadius(getDps(16));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, getDps(5), 1);
-        layoutParams.setMargins(0, getDps(4), 0, 0);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getDps(5));
         cardView.setLayoutParams(layoutParams);
         cardView.setCardBackgroundColor(c.getResources().getColor(R.color.colorRed));
 
-        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-
+        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        textView.setPadding(0,0,0,0);
         LinearLayout linearLayout = new LinearLayout(c);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setGravity(Gravity.CENTER);
-
-        if (textFirst) {
-            linearLayout.addView(textView);
-            linearLayout.addView(cardView);
-        } else {
-            linearLayout.addView(cardView);
-            linearLayout.addView(textView);
-        }
-
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        linearLayout.setPadding(getDps(16f), getDps(8f), getDps(16f), getDps(4f));
+        linearLayout.addView(textView);
+        linearLayout.addView(cardView);
 
         return linearLayout;
     }
