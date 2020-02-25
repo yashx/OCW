@@ -1,7 +1,10 @@
 package com.github.yashx.mit_ocw.activity;
 
+import android.view.Menu;
+
 import androidx.fragment.app.Fragment;
 
+import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.activity.abstracts.CourseAndDepartmentBaseActivity;
 import com.github.yashx.mit_ocw.fragment.DepartmentAllCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentFeaturedCoursesFragment;
@@ -18,6 +21,13 @@ import java.util.ArrayList;
 
 //see course activity for explanations not given as most code is same
 public class ShowDepartmentActivity extends CourseAndDepartmentBaseActivity {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean b = super.onCreateOptionsMenu(menu);
+        menu.findItem(R.id.bookmarkToggleMenuItem).setVisible(false);
+        return b;
+    }
 
     @Override
     public Fragment onTabPressed(TabLayout.Tab tab) {

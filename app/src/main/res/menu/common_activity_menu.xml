@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:title="Bookmark Toggle"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_unbookmark_white_24dp"
+        android:id="@+id/bookmarkToggleMenuItem" />
     <item android:title="Open in browser"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_public_white_24dp"

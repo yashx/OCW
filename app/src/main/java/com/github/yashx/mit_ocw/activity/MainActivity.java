@@ -85,5 +85,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        findViewById(R.id.bookmarkedCoursesCard).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(v.getContext(), BookmarksActivity.class);
+                        startActivity(i);
+                    }
+                }
+        );
     }
 }

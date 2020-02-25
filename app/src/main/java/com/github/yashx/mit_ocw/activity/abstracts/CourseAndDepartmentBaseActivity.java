@@ -1,6 +1,7 @@
 package com.github.yashx.mit_ocw.activity.abstracts;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
     private String url;
     private CourseAndDepartmentViewModel courseAndDepartmentViewModel;
     private AsyncTask asyncTask;
+    private Menu menu;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -44,6 +46,22 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(i);
                 break;
+            case R.id.bookmarkToggleMenuItem:
+                SharedPreferences preferences = getSharedPreferences(getResources()
+                        .getString(R.string.app_name), MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                String key = getResources().getString(R.string.bookmarks);
+                String oldB = preferences.getString(key, "");
+                if (!oldB.contains(url)) {
+                    editor.putString(key, oldB + url + ";").apply();
+                    menu.findItem(R.id.bookmarkToggleMenuItem)
+                            .setIcon(getResources().getDrawable(R.drawable.ic_bookmark_white_24dp));
+                } else {
+                    editor.putString(key, oldB.replace(url + ";", "")).apply();
+                    menu.findItem(R.id.bookmarkToggleMenuItem)
+                            .setIcon(getResources().getDrawable(R.drawable.ic_unbookmark_white_24dp));
+                }
+                break;
         }
         return true;
     }
@@ -51,6 +69,17 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.common_activity_menu, menu);
+        this.menu = menu;
+        SharedPreferences preferences = getSharedPreferences(getResources()
+                .getString(R.string.app_name), MODE_PRIVATE);
+        String key = getResources().getString(R.string.bookmarks);
+        String oldB = preferences.getString(key, "");
+        if (oldB.contains(url))
+            menu.findItem(R.id.bookmarkToggleMenuItem)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_bookmark_white_24dp));
+        else
+            menu.findItem(R.id.bookmarkToggleMenuItem)
+                    .setIcon(getResources().getDrawable(R.drawable.ic_unbookmark_white_24dp));
         return true;
     }
 
@@ -97,15 +126,15 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
 
     }
 
-    protected void setImageUrl(String u){
+    protected void setImageUrl(String u) {
         courseAndDepartmentViewModel.getUrlToImage().setValue(u);
     }
 
-    protected void setTextTitle(String t){
+    protected void setTextTitle(String t) {
         courseAndDepartmentViewModel.getTextTitle().setValue(t);
     }
 
-    protected void setTabs(ArrayList<TabModel> tabs){
+    protected void setTabs(ArrayList<TabModel> tabs) {
         courseAndDepartmentViewModel.getAllTabs().setValue(tabs);
     }
 
