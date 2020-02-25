@@ -82,7 +82,7 @@ public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
                 Document doc = Jsoup.connect(urlToLoad).get();
                 Elements eTs = doc.select(selectorToLiTag);
                 for (int i = 0; i < eTs.size(); i++) {
-                    String url = eTs.get(i).absUrl("href");
+                    String url = eTs.get(i).selectFirst("a").absUrl("href");
                     if (!url.contains("https://"))
                         url = "https://ocw.mit.edu" + url;
                     if (!url.endsWith("/"))
