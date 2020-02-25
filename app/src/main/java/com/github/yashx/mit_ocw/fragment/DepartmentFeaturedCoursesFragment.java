@@ -10,18 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.activity.ShowCourseActivity;
 import com.github.yashx.mit_ocw.model.CourseListItem;
+import com.github.yashx.mit_ocw.viewmodel.CourseAndDepartmentViewModel;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
@@ -29,14 +36,6 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
 
     private Context context;
     private LinearLayout linearLayout;
-
-    public static DepartmentFeaturedCoursesFragment newInstance(ArrayList<String> urlList) {
-        Bundle args = new Bundle();
-        args.putStringArrayList("html", urlList);
-        DepartmentFeaturedCoursesFragment fragment = new DepartmentFeaturedCoursesFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Nullable
     @Override
@@ -54,10 +53,38 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
+        final ProgressBar progressBar = view.findViewById(R.id.progressBarCommonFragment);
 
-        ArrayList<String> urlList = getArguments().getStringArrayList("html");
-        for (String url : urlList)
-            new JsonFetcherAsync().execute(url);
+
+        CourseAndDepartmentViewModel courseAndDepartmentViewModel =
+                new ViewModelProvider(requireActivity()).get(CourseAndDepartmentViewModel.class);
+        courseAndDepartmentViewModel.getDoc().observe(this, new Observer<Document>() {
+            @Override
+            public void onChanged(Document doc) {
+                progressBar.setVisibility(View.GONE);
+                //getting Featured Courses
+                Elements eTs = doc.select("#carousel_ul .item");
+                ArrayList<String> urlList = null;
+                if (eTs != null) {
+                    urlList = new ArrayList<>(eTs.size());
+                    for (Element e : eTs) {
+                        //getting absolute url (absUrl doesn't work as doc is loaded from html)
+                        String url = e.selectFirst("a").attr("href");
+                        if (!url.contains("https://"))
+                            url = "https://ocw.mit.edu" + url;
+                        if (!url.endsWith("/"))
+                            url += "/";
+                        int l = url.lastIndexOf("index.htm");
+                        if (l != -1) {
+                            url = url.substring(0, l) + "index.json";
+                        }
+                        urlList.add(url);
+                    }
+                }
+                for (String url : urlList)
+                    new JsonFetcherAsync().execute(url);
+            }
+        });
 
     }
 

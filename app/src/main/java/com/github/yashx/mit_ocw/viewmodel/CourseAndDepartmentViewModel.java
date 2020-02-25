@@ -6,18 +6,26 @@ import androidx.lifecycle.ViewModel;
 import com.github.yashx.mit_ocw.model.TabModel;
 import com.google.android.material.tabs.TabLayout;
 
+import org.jsoup.nodes.Document;
+
 import java.util.ArrayList;
 
-public class ImageTextTabBarViewModel extends ViewModel {
+public class CourseAndDepartmentViewModel extends ViewModel {
     private MutableLiveData<TabLayout.Tab> selectedTab;
     private MutableLiveData<String> urlToImage, textTitle;
     private MutableLiveData<ArrayList<TabModel>> allTabs;
+    private MutableLiveData<Document> doc;
 
-    public ImageTextTabBarViewModel() {
+    public CourseAndDepartmentViewModel() {
         selectedTab = new MutableLiveData<>();
         urlToImage = new MutableLiveData<>();
         textTitle = new MutableLiveData<>();
         allTabs = new MutableLiveData<>();
+        doc = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<Document> getDoc() {
+        return doc;
     }
 
     public MutableLiveData<TabLayout.Tab> getSelectedTab() {

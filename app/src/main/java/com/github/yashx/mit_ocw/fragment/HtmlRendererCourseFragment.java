@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 public class HtmlRendererCourseFragment extends Fragment {
     private LinearLayout linearLayout;
     private Context context;
+    ProgressBar progressBar;
 
     public static HtmlRendererCourseFragment newInstance(String url) {
         //stores the url of page to be loaded to be retrieved later
@@ -52,6 +55,7 @@ public class HtmlRendererCourseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
+        progressBar =view.findViewById(R.id.progressBarCommonFragment);
 
         //url is fetched and async job is started
         String url = getArguments().getString("url");
@@ -82,6 +86,9 @@ public class HtmlRendererCourseFragment extends Fragment {
         @Override
         protected void onPostExecute(Document document) {
             super.onPostExecute(document);
+
+            progressBar.setVisibility(View.GONE);
+
             Element eT;
             Elements eTs;
 

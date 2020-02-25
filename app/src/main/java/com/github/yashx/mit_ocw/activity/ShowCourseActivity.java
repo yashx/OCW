@@ -15,13 +15,13 @@ import java.util.ArrayList;
 
 public class ShowCourseActivity extends CourseAndDepartmentBaseActivity {
 
-    private Document doc;
+
     @Override
     public Fragment onTabPressed(TabLayout.Tab tab) {
         //deciding which fragment to replace with depending on tag
         //for home
         if ((tab.getTag()).equals("home"))
-            return CourseHomeFragment.newInstance(doc);
+            return new CourseHomeFragment();
             //for everything else
         else
             return HtmlRendererCourseFragment.newInstance((String) tab.getTag());
@@ -29,8 +29,6 @@ public class ShowCourseActivity extends CourseAndDepartmentBaseActivity {
 
     @Override
     protected void onPageLoaded(Document doc) {
-
-        this.doc = doc;
 
         setTextTitle(doc.select("#course_title > h1").first().text());
         setImageUrl(doc.select("#chpImage > div.image > img").first().absUrl("src"));

@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
 import com.github.yashx.mit_ocw.model.TabModel;
-import com.github.yashx.mit_ocw.viewmodel.ImageTextTabBarViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CourseAndDepartmentViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import org.jsoup.Jsoup;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity {
     private String url;
-    private ImageTextTabBarViewModel imageTextTabBarViewModel;
+    private CourseAndDepartmentViewModel courseAndDepartmentViewModel;
     private AsyncTask asyncTask;
 
     @Override
@@ -61,14 +61,21 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
         setContentView(R.layout.activity_common_showdepartment_showcourse);
         url = getIntent().getStringExtra("urlExtra");
 
-        imageTextTabBarViewModel = new ViewModelProvider(this)
-                .get(ImageTextTabBarViewModel.class);
+        courseAndDepartmentViewModel = new ViewModelProvider(this)
+                .get(CourseAndDepartmentViewModel.class);
 
-        imageTextTabBarViewModel.getSelectedTab().observe(this, new Observer<TabLayout.Tab>() {
+        courseAndDepartmentViewModel.getSelectedTab().observe(this, new Observer<TabLayout.Tab>() {
             @Override
             public void onChanged(TabLayout.Tab tab) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity
                         , onTabPressed(tab)).commit();
+            }
+        });
+
+        courseAndDepartmentViewModel.getDoc().observe(this, new Observer<Document>() {
+            @Override
+            public void onChanged(Document document) {
+                onPageLoaded(document);
             }
         });
 
@@ -91,15 +98,15 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
     }
 
     protected void setImageUrl(String u){
-        imageTextTabBarViewModel.getUrlToImage().setValue(u);
+        courseAndDepartmentViewModel.getUrlToImage().setValue(u);
     }
 
     protected void setTextTitle(String t){
-        imageTextTabBarViewModel.getTextTitle().setValue(t);
+        courseAndDepartmentViewModel.getTextTitle().setValue(t);
     }
 
     protected void setTabs(ArrayList<TabModel> tabs){
-        imageTextTabBarViewModel.getAllTabs().setValue(tabs);
+        courseAndDepartmentViewModel.getAllTabs().setValue(tabs);
     }
 
 
@@ -124,7 +131,7 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
         @Override
         protected void onPostExecute(Document document) {
             super.onPostExecute(document);
-            onPageLoaded(document);
+            courseAndDepartmentViewModel.getDoc().setValue(document);
         }
     }
 

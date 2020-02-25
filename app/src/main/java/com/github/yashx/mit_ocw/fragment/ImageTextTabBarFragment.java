@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.model.TabModel;
-import com.github.yashx.mit_ocw.viewmodel.ImageTextTabBarViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CourseAndDepartmentViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
@@ -56,10 +56,10 @@ public class ImageTextTabBarFragment extends Fragment {
         final TabLayout tabLayout;
         tabLayout = view.findViewById(R.id.tabLayoutImageTextTabBarFragment);
 
-        final ImageTextTabBarViewModel imageTextTabBarViewModel = new ViewModelProvider(requireActivity())
-                .get(ImageTextTabBarViewModel.class);
+        final CourseAndDepartmentViewModel courseAndDepartmentViewModel = new ViewModelProvider(requireActivity())
+                .get(CourseAndDepartmentViewModel.class);
 
-        imageTextTabBarViewModel.getAllTabs().observe(getViewLifecycleOwner(), new Observer<ArrayList<TabModel>>() {
+        courseAndDepartmentViewModel.getAllTabs().observe(getViewLifecycleOwner(), new Observer<ArrayList<TabModel>>() {
             @Override
             public void onChanged(ArrayList<TabModel> tabs) {
                 tabLayout.removeAllTabs();
@@ -71,7 +71,7 @@ public class ImageTextTabBarFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                imageTextTabBarViewModel.getSelectedTab().setValue(tab);
+                courseAndDepartmentViewModel.getSelectedTab().setValue(tab);
             }
 
             @Override
@@ -87,7 +87,7 @@ public class ImageTextTabBarFragment extends Fragment {
         final ImageView imageView = view.findViewById(R.id.imageViewImageTextTabBarFragment);
         imageView.setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4));
         imageView.setMinimumWidth(Resources.getSystem().getDisplayMetrics().widthPixels);
-        imageTextTabBarViewModel.getUrlToImage().observe(getViewLifecycleOwner(), new Observer<String>() {
+        courseAndDepartmentViewModel.getUrlToImage().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Picasso.get().load(s).into(imageView);
@@ -96,7 +96,7 @@ public class ImageTextTabBarFragment extends Fragment {
 
 
         final TextView textView = view.findViewById(R.id.textViewImageTextTabBarFragment);
-        imageTextTabBarViewModel.getTextTitle().observe(getViewLifecycleOwner(), new Observer<String>() {
+        courseAndDepartmentViewModel.getTextTitle().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 textView.setText(s);
