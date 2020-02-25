@@ -103,8 +103,4 @@ public class ImageTextTabBarFragment extends Fragment {
             }
         });
     }
-
-    public interface Callbacks {
-        void onTabPressed(Object tabTag);
-    }
 }

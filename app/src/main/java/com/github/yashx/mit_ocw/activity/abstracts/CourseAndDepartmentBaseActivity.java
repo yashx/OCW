@@ -2,7 +2,9 @@ package com.github.yashx.mit_ocw.activity.abstracts;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,12 +19,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
+import com.github.yashx.mit_ocw.model.TabModel;
 import com.github.yashx.mit_ocw.viewmodel.ImageTextTabBarViewModel;
 import com.google.android.material.tabs.TabLayout;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.util.ArrayList;
+
 public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity {
-    protected String url;
-    protected ImageTextTabBarViewModel imageTextTabBarViewModel;
+    private String url;
+    private ImageTextTabBarViewModel imageTextTabBarViewModel;
+    private AsyncTask asyncTask;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -77,7 +86,51 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
                 .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
                 .commit();
 
+        asyncTask = new CourseAndDepartmentBaseAsyncTask().execute(url);
+
     }
 
+    protected void setImageUrl(String u){
+        imageTextTabBarViewModel.getUrlToImage().setValue(u);
+    }
+
+    protected void setTextTitle(String t){
+        imageTextTabBarViewModel.getTextTitle().setValue(t);
+    }
+
+    protected void setTabs(ArrayList<TabModel> tabs){
+        imageTextTabBarViewModel.getAllTabs().setValue(tabs);
+    }
+
+
     protected abstract Fragment onTabPressed(TabLayout.Tab tab);
+
+    protected abstract void onPageLoaded(Document doc);
+
+    class CourseAndDepartmentBaseAsyncTask extends AsyncTask<String, Void, Document> {
+        @Override
+        protected Document doInBackground(String... strings) {
+            Document doc = null;
+            try {
+                if (!strings[0].endsWith("/"))
+                    strings[0] += "/";
+                doc = Jsoup.connect(strings[0]).get();
+            } catch (Exception e) {
+                Log.e("TAG", "doInBackground: ", e);
+            }
+            return doc;
+        }
+
+        @Override
+        protected void onPostExecute(Document document) {
+            super.onPostExecute(document);
+            onPageLoaded(document);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        asyncTask.cancel(true);
+    }
 }
