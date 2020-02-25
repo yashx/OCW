@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintTop_toBottomOf="@+id/searchViewAllCourses"
         tools:itemCount="10"
         tools:listitem="@layout/listitem_department" />
 
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAllCourses" />
 
     <SearchView
-        android:id="@+id/searchView"
+        android:id="@+id/searchViewAllCourses"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

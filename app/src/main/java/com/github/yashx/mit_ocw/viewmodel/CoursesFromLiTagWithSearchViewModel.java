@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.github.yashx.mit_ocw.model.CourseListItem;
@@ -14,24 +15,51 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class CoursesFromLiTagViewModel extends ViewModel {
+public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
 
     private AsyncTask asyncTask;
 
-    private MutableLiveData<ArrayList<CourseListItem>> courses;
+    private MutableLiveData<ArrayList<CourseListItem>> filteredCourses;
+    private MutableLiveData<String> textQuery;
+    private ArrayList<CourseListItem> allCourses;
+    private Observer<String> textQueryObserver;
 
-    public CoursesFromLiTagViewModel(String urlToLoad, String selectorToLi) {
+    public CoursesFromLiTagWithSearchViewModel(String urlToLoad, String selectorToLi) {
         asyncTask = new PopularCoursesFromLiTagAsyncTask(urlToLoad, selectorToLi).execute();
 
+
+        textQueryObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s.isEmpty())
+                    filteredCourses.setValue(allCourses);
+                else {
+                    ArrayList<CourseListItem> courseListItems = new ArrayList<>();
+                    for (CourseListItem c : allCourses) {
+                        if (c.getTitle().toLowerCase().contains(s.toLowerCase())
+                        || c.getMcn().toLowerCase().contains(s.toLowerCase())
+                        || c.getSem().toLowerCase().contains(s.toLowerCase()))
+                            courseListItems.add(c);
+                    }
+                    filteredCourses.setValue(courseListItems);
+                }
+            }
+        };
+        textQuery = new MutableLiveData<>();
+        textQuery.observeForever(textQueryObserver);
+        filteredCourses = new MutableLiveData<>();
     }
 
-    public LiveData<ArrayList<CourseListItem>> getCourses() {
-        if (courses == null)
-            courses = new MutableLiveData<>();
-        return courses;
+    public LiveData<ArrayList<CourseListItem>> getFilteredCourses() {
+        return filteredCourses;
     }
 
-    private class PopularCoursesFromLiTagAsyncTask extends AsyncTask<Void, ArrayList<CourseListItem>, ArrayList<CourseListItem>> {
+    public MutableLiveData<String> getTextQuery() {
+        return textQuery;
+    }
+
+    private class PopularCoursesFromLiTagAsyncTask extends AsyncTask<Void
+            , ArrayList<CourseListItem>, ArrayList<CourseListItem>> {
         private String urlToLoad;
         private String selectorToLiTag;
 
@@ -43,14 +71,9 @@ public class CoursesFromLiTagViewModel extends ViewModel {
         @Override
         protected void onPostExecute(ArrayList<CourseListItem> courseListItems) {
             super.onPostExecute(courseListItems);
-            courses.setValue(courseListItems);
+            allCourses = courseListItems;
+            filteredCourses.setValue(courseListItems);
         }
-
-        //        @Override
-//        protected void onProgressUpdate(ArrayList<CourseListItem>... values) {
-//            super.onProgressUpdate(values);
-//            courses.setValue(values[0]);
-//        }
 
         @Override
         protected ArrayList<CourseListItem> doInBackground(Void... voids) {
@@ -80,10 +103,10 @@ public class CoursesFromLiTagViewModel extends ViewModel {
             for (int i = 0; i < courseListItems.size(); i++) {
                 for (int j = 0; j < courseListItems.size() - i - 1; j++)
                     if (courseListItems.get(j).getTitle().toLowerCase()
-                            .compareTo(courseListItems.get(j+1).getTitle().toLowerCase()) > 0) {
+                            .compareTo(courseListItems.get(j + 1).getTitle().toLowerCase()) > 0) {
                         CourseListItem temp = courseListItems.get(j);
-                        courseListItems.set(j, courseListItems.get(j+1));
-                        courseListItems.set(j+1, temp);
+                        courseListItems.set(j, courseListItems.get(j + 1));
+                        courseListItems.set(j + 1, temp);
                     }
             }
             return (courseListItems);
@@ -93,7 +116,10 @@ public class CoursesFromLiTagViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        super.onCleared();
         asyncTask.cancel(true);
+        textQuery.removeObserver(textQueryObserver);
+        super.onCleared();
     }
+
+
 }

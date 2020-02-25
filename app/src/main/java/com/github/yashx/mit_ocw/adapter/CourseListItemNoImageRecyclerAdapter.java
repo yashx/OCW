@@ -56,7 +56,7 @@ public class CourseListItemNoImageRecyclerAdapter extends RecyclerView.Adapter<C
     public void onBindViewHolder(@NonNull CourseListItemNoImageViewHolder holder, int position) {
         final CourseListItem courseListItem = courses.get(position);
         holder.courseTitle.setText(courseListItem.getTitle());
-        holder.courseSubtitle.setText(courseListItem.getSubtitle());
+        holder.courseSubtitle.setText(courseListItem.getSem());
         (holder.courseCode).setMinimumWidth((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.2));
         (holder.courseCode).setText(courseListItem.getMcn());
         holder.itemView.setOnClickListener(new View.OnClickListener() {

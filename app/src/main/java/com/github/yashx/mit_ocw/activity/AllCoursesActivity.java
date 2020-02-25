@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,9 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.adapter.CourseListItemNoImageRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromLiTagViewModel;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromLiTagViewModelFactory;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromJsonViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CoursesFromLiTagWithSearchViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CoursesFromLiTagViewModelWithSearchFactory;
 
 import java.util.ArrayList;
 
@@ -47,23 +47,37 @@ public class AllCoursesActivity extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        CoursesFromLiTagViewModelFactory factory = new CoursesFromLiTagViewModelFactory(
+        CoursesFromLiTagViewModelWithSearchFactory factory = new CoursesFromLiTagViewModelWithSearchFactory(
                 "https://ocw.mit.edu/courses/",
                 "#course_wrapper   ul > li.courseListRow"
         );
 
-        CoursesFromLiTagViewModel coursesFromJsonViewModel = new ViewModelProvider(this,factory)
-                .get(CoursesFromLiTagViewModel.class);
+        final CoursesFromLiTagWithSearchViewModel coursesFromJsonViewModel = new ViewModelProvider(this, factory)
+                .get(CoursesFromLiTagWithSearchViewModel.class);
 
         final ProgressBar progressBar = findViewById(R.id.progressBarAllCourses);
         final RecyclerView recyclerView = findViewById(R.id.recyclerViewAllCourses);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        coursesFromJsonViewModel.getCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
+        coursesFromJsonViewModel.getFilteredCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
             @Override
             public void onChanged(ArrayList<CourseListItem> courseListItems) {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setAdapter(new CourseListItemNoImageRecyclerAdapter(courseListItems));
+            }
+        });
+
+        SearchView searchView = findViewById(R.id.searchViewAllCourses);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                coursesFromJsonViewModel.getTextQuery().setValue(newText);
+                return true;
             }
         });
 
