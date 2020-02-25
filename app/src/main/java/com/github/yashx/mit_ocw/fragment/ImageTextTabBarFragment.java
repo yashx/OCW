@@ -61,10 +61,8 @@ public class ImageTextTabBarFragment extends Fragment {
 
         String imageUrl;
         String titleText;
-        RelativeLayout relativeLayout;
         TabLayout tabLayout;
         tabLayout = view.findViewById(R.id.tabLayoutImageTextTabBarFragment);
-        relativeLayout = view.findViewById(R.id.relativeLayoutImageTextTabBarFragment);
 
         imageUrl = getArguments().getString("imageUrl");
         titleText = getArguments().getString("titleText");
@@ -90,27 +88,13 @@ public class ImageTextTabBarFragment extends Fragment {
 
             }
         });
-        ImageView imageView = new ImageView(context);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ImageView imageView = view.findViewById(R.id.imageViewImageTextTabBarFragment);
         imageView.setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4));
         imageView.setMinimumWidth(Resources.getSystem().getDisplayMetrics().widthPixels);
         Picasso.get().load(imageUrl).into(imageView);
 
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-        imageView.setLayoutParams(lp);
-
-        TextView textView = ViewBuilders.BigHeadingTextView(context, titleText);
-        lp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        textView.setLayoutParams(lp);
-
-        relativeLayout.addView(imageView, 0);
-        relativeLayout.addView(textView, 1);
+        TextView textView = view.findViewById(R.id.textViewImageTextTabBarFragment);
+        textView.setText(titleText);
     }
 
     public interface Callbacks {
