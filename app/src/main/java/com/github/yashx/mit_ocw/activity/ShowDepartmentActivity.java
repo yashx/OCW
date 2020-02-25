@@ -1,25 +1,19 @@
 package com.github.yashx.mit_ocw.activity;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.activity.abstracts.CourseAndDepartmentBaseActivity;
 import com.github.yashx.mit_ocw.fragment.DepartmentAllCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentFeaturedCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentHomeFragment;
-import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
 import com.github.yashx.mit_ocw.model.CourseListItem;
+import com.github.yashx.mit_ocw.model.TabModel;
+import com.google.android.material.tabs.TabLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,10 +23,8 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 //see course activity for explanations not given as most code is same
-public class ShowDepartmentActivity extends AppCompatActivity implements ImageTextTabBarFragment.Callbacks {
+public class ShowDepartmentActivity extends CourseAndDepartmentBaseActivity {
 
-    private String url;
-    private ImageTextTabBarFragment.Callbacks callbacks;
     private Document doc;
     private ArrayList<CourseListItem> courseListItemArrayList;
     private ArrayList<String> urlList;
@@ -41,9 +33,8 @@ public class ShowDepartmentActivity extends AppCompatActivity implements ImageTe
     private DepartmentAllCoursesFragment departmentAllCoursesFragment;
 
     @Override
-    public void onTabPressed(Object tabTag) {
-        Fragment currentFragment;
-        switch ((String) tabTag) {
+    public Fragment onTabPressed(TabLayout.Tab tab) {
+        switch ((String) tab.getTag()) {
             default:
             case "home":
                 if (departmentHomeFragment == null) {
@@ -51,8 +42,7 @@ public class ShowDepartmentActivity extends AppCompatActivity implements ImageTe
                     departmentHomeFragment.setRetainInstance(true);
                     System.out.println("making");
                 }
-                currentFragment = departmentHomeFragment;
-                break;
+                return departmentHomeFragment;
             case "Featured Courses":
                 if (departmentFeaturedCoursesFragment == null) {
                     departmentFeaturedCoursesFragment = DepartmentFeaturedCoursesFragment.newInstance(urlList);
@@ -60,8 +50,7 @@ public class ShowDepartmentActivity extends AppCompatActivity implements ImageTe
                     System.out.println("making");
 
                 }
-                currentFragment = departmentFeaturedCoursesFragment;
-                break;
+                return departmentFeaturedCoursesFragment;
             case "All Courses":
                 if (departmentAllCoursesFragment == null) {
                     departmentAllCoursesFragment = DepartmentAllCoursesFragment.newInstance(courseListItemArrayList);
@@ -69,47 +58,13 @@ public class ShowDepartmentActivity extends AppCompatActivity implements ImageTe
                     System.out.println("making");
 
                 }
-                currentFragment = departmentAllCoursesFragment;
-                break;
+                return departmentAllCoursesFragment;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity, currentFragment).commit();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            case R.id.openInBrowserMenuItem:
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(i);
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.common_activity_menu, menu);
-        return true;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_common_showdepartment_showcourse);
-
-
-        Toolbar toolbar = findViewById(R.id.toolbarCommonActivity);
-        callbacks = this;
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        url = getIntent().getStringExtra("urlExtra");
         new ShowDepartmentActivity.JsoupDocumentAsyncLoader().execute(url);
     }
 
@@ -129,24 +84,18 @@ public class ShowDepartmentActivity extends AppCompatActivity implements ImageTe
             String u = document.select("#global_inner > img").first().absUrl("src");
             //finds department name
             String t = document.select("#parent-fieldname-title").first().text();
-            ArrayList<String> tabNames = new ArrayList<>();
-            ArrayList<String> tabTags = new ArrayList<>();
+            ArrayList<TabModel> tabs = new ArrayList<>();
+
+            imageTextTabBarViewModel.getTextTitle().setValue(t);
+            imageTextTabBarViewModel.getUrlToImage().setValue(u);
 
             //for tabs (nothing needs to be loaded as everything is on doc)
-            tabNames.add("Home");
-            tabNames.add("Featured Courses");
-            tabNames.add("All Courses");
-            tabTags.add("Home");
-            tabTags.add("Featured Courses");
-            tabTags.add("All Courses");
+            tabs.add(new TabModel().setText("Home").setTag("Home"));
+            tabs.add(new TabModel().setText("Featured Courses").setTag("Featured Courses"));
+            tabs.add(new TabModel().setText("All Courses").setTag("All Courses"));
 
-            ImageTextTabBarFragment imageTextTabBarFragment = ImageTextTabBarFragment.newInstance(u, t, tabNames, tabTags);
-            imageTextTabBarFragment.setCallbacks(callbacks);
+            imageTextTabBarViewModel.getAllTabs().setValue(tabs);
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
-                    .commit();
-            onTabPressed("home");
 
         }
 
