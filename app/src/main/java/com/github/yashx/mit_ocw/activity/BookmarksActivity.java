@@ -1,6 +1,7 @@
 package com.github.yashx.mit_ocw.activity;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -10,17 +11,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.yashx.mit_ocw.R;
-import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecylerActivity;
+import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecyclerActivity;
 import com.github.yashx.mit_ocw.adapter.CourseListItemRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.github.yashx.mit_ocw.viewmodel.CoursesFromUrlViewModel;
 
 import java.util.ArrayList;
 
-public class BookmarksActivity extends CommonWithRecylerActivity {
+public class BookmarksActivity extends CommonWithRecyclerActivity {
     SharedPreferences sharedPreferences;
     String urls;
     CoursesFromUrlViewModel coursesFromUrlViewModel;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        sharedPreferences = getSharedPreferences(getResources()
+                .getString(R.string.app_name), MODE_PRIVATE);
+        urls = sharedPreferences.getString(getResources()
+                .getString(R.string.bookmarks), "");
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected String getActivityTitle() {
@@ -29,11 +40,6 @@ public class BookmarksActivity extends CommonWithRecylerActivity {
 
     @Override
     protected void initRecyclerView(final RecyclerView recyclerView, final ProgressBar progressBar) {
-        sharedPreferences = getSharedPreferences(getResources()
-                .getString(R.string.app_name), MODE_PRIVATE);
-        urls = sharedPreferences.getString(getResources()
-                .getString(R.string.bookmarks), "");
-
         coursesFromUrlViewModel = new ViewModelProvider(this)
                 .get(CoursesFromUrlViewModel.class);
 
@@ -56,6 +62,7 @@ public class BookmarksActivity extends CommonWithRecylerActivity {
 
     @Override
     protected void onResume() {
+        super.onResume();
         String newUrls = sharedPreferences.getString(getResources()
                 .getString(R.string.bookmarks), "");
         if (!urls.equals(newUrls)) {
@@ -66,6 +73,5 @@ public class BookmarksActivity extends CommonWithRecylerActivity {
                 urlsArray = newUrls.split(";");
             coursesFromUrlViewModel.getUrlArr().setValue(urlsArray);
         }
-        super.onResume();
     }
 }

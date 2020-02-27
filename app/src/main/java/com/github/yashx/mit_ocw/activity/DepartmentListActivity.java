@@ -6,13 +6,13 @@ import android.widget.ProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecylerActivity;
+import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecyclerActivity;
 import com.github.yashx.mit_ocw.adapter.DepartmentListRecyclerAdapter;
 import com.github.yashx.mit_ocw.util.LoadJsonFromAsset;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
-public class DepartmentListActivity extends CommonWithRecylerActivity {
+public class DepartmentListActivity extends CommonWithRecyclerActivity {
 
 
     @Override

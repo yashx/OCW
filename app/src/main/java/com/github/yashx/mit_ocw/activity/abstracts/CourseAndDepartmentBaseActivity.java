@@ -23,17 +23,21 @@ import com.github.yashx.mit_ocw.fragment.ImageTextTabBarFragment;
 import com.github.yashx.mit_ocw.model.TabModel;
 import com.github.yashx.mit_ocw.viewmodel.CourseAndDepartmentViewModel;
 import com.google.android.material.tabs.TabLayout;
+import com.treebo.internetavailabilitychecker.InternetAvailabilityChecker;
+import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
-public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity {
+public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity
+        implements InternetConnectivityListener {
     private String url;
     private CourseAndDepartmentViewModel courseAndDepartmentViewModel;
     private AsyncTask asyncTask;
     private Menu menu;
+    private Boolean lastState = null;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -84,46 +88,64 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onInternetConnectivityChanged(boolean isConnected) {
+        System.out.println(isConnected);
+        if(lastState!=null &&(lastState==isConnected))
+            return;
+        lastState = isConnected;
+        if (isConnected) {
+            setContentView(R.layout.activity_common_showdepartment_showcourse);
+            url = getIntent().getStringExtra("urlExtra");
 
-        setContentView(R.layout.activity_common_showdepartment_showcourse);
-        url = getIntent().getStringExtra("urlExtra");
+            courseAndDepartmentViewModel = new ViewModelProvider(this)
+                    .get(CourseAndDepartmentViewModel.class);
 
-        courseAndDepartmentViewModel = new ViewModelProvider(this)
-                .get(CourseAndDepartmentViewModel.class);
+            courseAndDepartmentViewModel.getSelectedTab().observe(this, new Observer<TabLayout.Tab>() {
+                @Override
+                public void onChanged(TabLayout.Tab tab) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity
+                            , onTabPressed(tab)).commit();
+                }
+            });
 
-        courseAndDepartmentViewModel.getSelectedTab().observe(this, new Observer<TabLayout.Tab>() {
-            @Override
-            public void onChanged(TabLayout.Tab tab) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutCommonActivity
-                        , onTabPressed(tab)).commit();
-            }
-        });
+            courseAndDepartmentViewModel.getDoc().observe(this, new Observer<Document>() {
+                @Override
+                public void onChanged(Document document) {
+                    onPageLoaded(document);
+                }
+            });
 
-        courseAndDepartmentViewModel.getDoc().observe(this, new Observer<Document>() {
-            @Override
-            public void onChanged(Document document) {
-                onPageLoaded(document);
-            }
-        });
+            Toolbar toolbar = findViewById(R.id.toolbarCommonActivity);
+            setSupportActionBar(toolbar);
 
-        Toolbar toolbar = findViewById(R.id.toolbarCommonActivity);
-        setSupportActionBar(toolbar);
+
+            ImageTextTabBarFragment imageTextTabBarFragment = new ImageTextTabBarFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
+                    .commit();
+
+            asyncTask = new CourseAndDepartmentBaseAsyncTask().execute(url);
+        } else {
+            if (asyncTask != null)
+                asyncTask.cancel(true);
+            setContentView(R.layout.layout_no_internet);
+            Toolbar toolbar = findViewById(R.id.toolbarNoInternet);
+            setSupportActionBar(toolbar);
+        }
         ActionBar a = getSupportActionBar();
         if (a != null) {
             a.setDisplayHomeAsUpEnabled(true);
             a.setDisplayShowHomeEnabled(true);
             a.setDisplayShowTitleEnabled(false);
         }
+    }
 
-        ImageTextTabBarFragment imageTextTabBarFragment = new ImageTextTabBarFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
-                .commit();
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        asyncTask = new CourseAndDepartmentBaseAsyncTask().execute(url);
-
+        InternetAvailabilityChecker internetAvailabilityChecker = InternetAvailabilityChecker.getInstance();
+        internetAvailabilityChecker.addInternetConnectivityListener(this);
     }
 
     protected void setImageUrl(String u) {
@@ -166,7 +188,9 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity 
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        InternetAvailabilityChecker.getInstance()
+                .removeInternetConnectivityChangeListener(this);
         asyncTask.cancel(true);
+        super.onDestroy();
     }
 }

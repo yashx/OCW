@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecylerActivity;
+import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecyclerActivity;
 import com.github.yashx.mit_ocw.adapter.CourseListItemRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.github.yashx.mit_ocw.viewmodel.CoursesFromJsonViewModelFactory;
@@ -16,7 +16,7 @@ import com.github.yashx.mit_ocw.viewmodel.CoursesFromJsonViewModel;
 
 import java.util.ArrayList;
 
-public class ScholarCoursesActivity extends CommonWithRecylerActivity {
+public class ScholarCoursesActivity extends CommonWithRecyclerActivity {
 
     @Override
     protected void initRecyclerView(final RecyclerView recyclerView, final ProgressBar progressBar) {

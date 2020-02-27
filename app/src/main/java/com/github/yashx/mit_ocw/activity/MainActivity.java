@@ -1,6 +1,5 @@
 package com.github.yashx.mit_ocw.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Context c = getApplicationContext();
         setContentView(R.layout.activity_main);
         findViewById(R.id.deptListCard).setOnClickListener(
                 new View.OnClickListener() {
