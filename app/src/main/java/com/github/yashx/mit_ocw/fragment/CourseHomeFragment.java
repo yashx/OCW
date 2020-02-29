@@ -6,13 +6,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,6 +90,21 @@ public class CourseHomeFragment extends Fragment {
                     }
                     linearLayout.addView(cp);
                 }
+
+                eTs = doc.select("#description > div > ul li");
+                if (eTs != null) {
+                    boolean hasVideos = false;
+                    for (Element e : eTs) {
+                        if(e.text().trim().toLowerCase().contains("video")){
+                            hasVideos = true;
+                            break;
+                        }
+                    }
+                    if(hasVideos)
+                        linearLayout.addView(ViewBuilders.SmallBodyMidTextView(context
+                                ,getResources().getString(R.string.videoWarning)));
+                }
+
 
                 //getting Description
                 eT = doc.selectFirst("#description > div > p");

@@ -35,7 +35,7 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_contribute" />
+                    app:srcCompat="@drawable/ic_info_outline_white_24dp" />
 
                 <TextView
                     android:id="@+id/contributeTextView50"
@@ -44,7 +44,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp"
                     android:gravity="center|start"
-                    android:text="Contribute"
+                    android:text="About"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
                     android:textStyle="bold"

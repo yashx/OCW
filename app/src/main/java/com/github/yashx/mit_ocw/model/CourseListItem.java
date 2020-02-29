@@ -10,16 +10,20 @@ public class CourseListItem implements Serializable {
     String mcn;
     String sem;
     String href;
+    String features;
+    boolean hasVideos;
 
     public static CourseListItem fromJson(String json) {
         Gson gson = new Gson();
         CourseListItem courseListItem = gson.fromJson(json, CourseListItem.class);
         courseListItem.setHrefFromThumb();
+        courseListItem.setHasVideosFromFeatures();
         return courseListItem;
     }
 
-    public CourseListItem(String title,String mcn, String sem,String href) {
+    public CourseListItem(String title,String mcn, String sem,boolean hasVideos, String href) {
         this.title = title;
+        this.hasVideos = hasVideos;
         this.mcn = mcn;
         this.sem = sem;
         if (!href.contains("https://"))
@@ -29,8 +33,9 @@ public class CourseListItem implements Serializable {
         this.href = href;
     }
 
-    public CourseListItem(String title, String mcn, String sem,String href, String thumb) {
+    public CourseListItem(String title, String mcn, String sem,String href, boolean hasVideos,String thumb) {
         this.title = title;
+        this.hasVideos = hasVideos;
         this.thumb = thumb;
         this.mcn = mcn;
         this.sem = sem;
@@ -41,12 +46,19 @@ public class CourseListItem implements Serializable {
         this.href = href;
     }
 
-    public  void setHrefFromThumb(){
+    private void setHrefFromThumb(){
             href = thumb.substring(0,thumb.lastIndexOf("/"));
         if (!href.contains("https://"))
             href = "https://ocw.mit.edu" + href;
         if (!href.endsWith("/"))
             href += "/";
+    }
+
+    private void setHasVideosFromFeatures(){
+        if(features!=null && !features.isEmpty())
+            hasVideos = features.toLowerCase().contains("video");
+        else
+            hasVideos = false;
     }
     public void setThumb(String thumb) {
         this.thumb = thumb;

@@ -74,11 +74,16 @@ public class DepartmentAllCoursesFragment extends Fragment {
                         if (!url.endsWith("/"))
                             url += "/";
                         href = url;
+                        boolean hasVideos = (e.attr("data-other_video")
+                                .equalsIgnoreCase("true")
+                                || e.attr("data-complete_video")
+                                .equalsIgnoreCase("true"));
 
                         courseListItem = new CourseListItem(
                                 e.attr("data-title"),
                                 e.attr("data-courseno"),
                                 e.attr("data-semester"),
+                                hasVideos,
                                 href
                         );
 

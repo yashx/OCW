@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.github.yashx.mit_ocw.R;
 
-public class ContributeActivity extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -22,7 +22,7 @@ public class ContributeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contribute);
+        setContentView(R.layout.activity_about);
 
         Toolbar toolbar = findViewById(R.id.toolbarContribute);
         setSupportActionBar(toolbar);

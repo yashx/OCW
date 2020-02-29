@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.DepartmentListActivity">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:cardBackgroundColor="@color/colorRed"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewAllCourses"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewAllCourses"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAllCourses" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarAllCourses"
         android:layout_width="0dp"
@@ -64,5 +75,5 @@
         android:queryHint="@string/allCoursesHints"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAllCourses" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 </androidx.constraintlayout.widget.ConstraintLayout>

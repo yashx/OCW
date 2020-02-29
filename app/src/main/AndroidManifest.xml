@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.AllCoursesActivity"/>
         <activity android:name=".activity.BookmarksActivity"/>
-        <activity android:name=".activity.ContributeActivity" />
+        <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.ScholarCoursesActivity" />
         <activity android:name=".activity.NewCoursesActivity" />
         <activity android:name=".activity.PopularCoursesActivity" />

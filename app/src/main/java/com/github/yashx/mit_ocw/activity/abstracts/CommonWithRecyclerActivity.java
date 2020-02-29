@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.androidstudy.networkmanager.Monitor;
-import com.androidstudy.networkmanager.Tovuti;
 import com.github.yashx.mit_ocw.R;
 import com.treebo.internetavailabilitychecker.InternetAvailabilityChecker;
 import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
@@ -31,8 +29,8 @@ public abstract class CommonWithRecyclerActivity extends AppCompatActivity
 
     @Override
     public void onInternetConnectivityChanged(boolean isConnected) {
-        System.out.println("isConnected "+isConnected);
-        if(lastState!=null &&(lastState==isConnected))
+        System.out.println("isConnected " + isConnected);
+        if (lastState != null && (lastState == isConnected))
             return;
         lastState = isConnected;
         if (isConnected) {

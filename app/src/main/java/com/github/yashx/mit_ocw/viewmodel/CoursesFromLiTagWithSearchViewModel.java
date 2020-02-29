@@ -37,8 +37,8 @@ public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
                     ArrayList<CourseListItem> courseListItems = new ArrayList<>();
                     for (CourseListItem c : allCourses) {
                         if (c.getTitle().toLowerCase().contains(s.toLowerCase())
-                        || c.getMcn().toLowerCase().contains(s.toLowerCase())
-                        || c.getSem().toLowerCase().contains(s.toLowerCase()))
+                                || c.getMcn().toLowerCase().contains(s.toLowerCase())
+                                || c.getSem().toLowerCase().contains(s.toLowerCase()))
                             courseListItems.add(c);
                     }
                     filteredCourses.setValue(courseListItems);
@@ -87,11 +87,16 @@ public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
                         url = "https://ocw.mit.edu" + url;
                     if (!url.endsWith("/"))
                         url += "/";
+                    boolean hasVideos = (eTs.get(i).attr("data-other_video")
+                            .equalsIgnoreCase("true")
+                            || eTs.get(i).attr("data-complete_video")
+                            .equalsIgnoreCase("true"));
 
                     CourseListItem courseListItem = new CourseListItem(
                             eTs.get(i).attr("data-title"),
                             eTs.get(i).attr("data-courseno"),
                             eTs.get(i).attr("data-semester"),
+                            hasVideos,
                             url
                     );
                     courseListItems.add(courseListItem);

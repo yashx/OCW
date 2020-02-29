@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".activity.DepartmentListActivity">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        app:cardBackgroundColor="@color/colorRed"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCommonWithRecycler"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewCommonWithRecycler"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCommonWithRecycler" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarCommonWithRecycler"
         android:layout_width="0dp"
@@ -33,11 +44,11 @@
         android:id="@+id/recyclerViewCommonWithRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCommonWithRecycler"
+        app:layout_constraintTop_toBottomOf="@+id/cardView4"
         tools:itemCount="10"
         tools:listitem="@layout/listitem_department" />
 
