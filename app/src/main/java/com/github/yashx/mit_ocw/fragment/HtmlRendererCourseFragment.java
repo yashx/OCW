@@ -3,7 +3,6 @@ package com.github.yashx.mit_ocw.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,13 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.github.yashx.mit_ocw.R;
+import com.github.yashx.mit_ocw.activity.HtmlRendererActivity;
 import com.github.yashx.mit_ocw.util.JsoupElementCleaner;
 import com.github.yashx.mit_ocw.util.JsoupViewBuilder;
 import com.google.android.material.chip.Chip;
@@ -55,7 +54,7 @@ public class HtmlRendererCourseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linearLayout = view.findViewById(R.id.linearLayoutCommonFragment);
-        progressBar =view.findViewById(R.id.progressBarCommonFragment);
+        progressBar = view.findViewById(R.id.progressBarCommonFragment);
 
         //url is fetched and async job is started
         String url = getArguments().getString("url");
@@ -94,7 +93,7 @@ public class HtmlRendererCourseFragment extends Fragment {
 
             eT = document.selectFirst("#course_nav > ul > li.selected");
             //checking if selected link has sub links
-            if (eT.select(".tlp_links") != null) {
+            if (eT != null && eT.select(".tlp_links") != null) {
                 //getting sub links and setting up chips
                 eTs = document.select("ul.selected li");
                 if (eTs != null) {
@@ -113,7 +112,10 @@ public class HtmlRendererCourseFragment extends Fragment {
                         chip.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse((String) v.getTag()));
+//                                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse((String) v.getTag()));
+//                                startActivity(i);
+                                Intent i = new Intent(context, HtmlRendererActivity.class);
+                                i.putExtra("urlExtra", (String) v.getTag());
                                 startActivity(i);
                             }
                         });
