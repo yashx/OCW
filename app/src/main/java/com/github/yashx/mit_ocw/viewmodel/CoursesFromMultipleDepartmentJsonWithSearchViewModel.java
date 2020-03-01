@@ -34,6 +34,8 @@ public class CoursesFromMultipleDepartmentJsonWithSearchViewModel extends ViewMo
         textQueryObserver = new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                if(allCourses== null)
+                    return;
                 if (s.isEmpty())
                     filteredCourses.setValue(allCourses);
                 else {
