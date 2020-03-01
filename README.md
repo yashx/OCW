@@ -5,5 +5,5 @@
 <a href="https://play.google.com/store/apps/details?id=com.github.yashx.mit_ocw"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
 ## Disclaimer
 This app is not the official app for MIT OCW and is in no way related or endorsed by them. This is just a project I built on a whim. If you have any problem with the course material please understand that I have no control over it, I just show what is on the website in a more user friendly way.
-## Screenshots (It's red)
+## Screenshots
 <img src="/screenshots/ss1.jpg" width="280"/> <img src="/screenshots/ss2.jpg" width="280"/> <img src="/screenshots/ss3.jpg" width="280"/> <img src="/screenshots/ss4.jpg" width="280"/> <img src="/screenshots/ss5.jpg" width="280"/> <img src="/screenshots/ss6.jpg" width="280"/>
