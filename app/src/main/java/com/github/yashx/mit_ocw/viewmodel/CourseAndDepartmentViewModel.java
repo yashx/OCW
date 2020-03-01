@@ -12,7 +12,8 @@ import java.util.ArrayList;
 
 public class CourseAndDepartmentViewModel extends ViewModel {
     private MutableLiveData<TabLayout.Tab> selectedTab;
-    private MutableLiveData<String> urlToImage, textTitle;
+    private MutableLiveData<String> urlToImage;
+    private MutableLiveData<String> textTitle;
     private MutableLiveData<ArrayList<TabModel>> allTabs;
     private MutableLiveData<Document> doc;
 

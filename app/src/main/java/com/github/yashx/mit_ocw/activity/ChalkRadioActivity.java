@@ -1,20 +1,17 @@
 package com.github.yashx.mit_ocw.activity;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.adapter.ChalkRadioLinksAdapter;
-
-import java.util.ArrayList;
 
 public class ChalkRadioActivity extends AppCompatActivity {
 
@@ -44,7 +41,7 @@ public class ChalkRadioActivity extends AppCompatActivity {
         String[] platformUrls = getResources().getStringArray(R.array.platformUrls);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerViewChalkRadio);
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),4));
-        recyclerView.setAdapter(new ChalkRadioLinksAdapter(platforms,platformUrls));
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 4));
+        recyclerView.setAdapter(new ChalkRadioLinksAdapter(platforms, platformUrls));
     }
 }

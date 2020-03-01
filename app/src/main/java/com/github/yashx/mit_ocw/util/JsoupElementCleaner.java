@@ -37,12 +37,12 @@ public class JsoupElementCleaner {
             //removes all p style attributes from html
             eTs = eT.select("p[style]");
             if (eTs != null)
-                for (org.jsoup.nodes.Element el : eTs)
+                for (Element el : eTs)
                     el.removeAttr("style");
 
             //flattening html
             while (eT.selectFirst("div:not(.help)") != null) {
-                org.jsoup.nodes.Element el = eT.selectFirst("div:not(.help)");
+                Element el = eT.selectFirst("div:not(.help)");
                 el.after(el.html());
                 el.remove();
             }
@@ -50,7 +50,7 @@ public class JsoupElementCleaner {
             //replaces all relative links with absolute links to allow user open them easily from fragment
             eTs = eT.select("a");
             if (eTs != null) {
-                for (org.jsoup.nodes.Element el : eTs) {
+                for (Element el : eTs) {
                     if (el.attr("href") != null)
                         if(!el.absUrl("href").isEmpty())
                             el.attr("href", el.absUrl("href"));

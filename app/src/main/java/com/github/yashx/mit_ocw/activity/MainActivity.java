@@ -1,7 +1,6 @@
 package com.github.yashx.mit_ocw.activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,12 +17,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.app_name),MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("firstRun",true)){
+        SharedPreferences sharedPreferences = getSharedPreferences(getResources().getString(R.string.app_name), MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("firstRun", true)) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).setTitle("Disclaimer")
-                    .setMessage(getResources().getString(R.string.disclaimer)).setPositiveButton("Okay",null).create();
+                    .setMessage(getResources().getString(R.string.disclaimer)).setPositiveButton("Okay", null).create();
             alertDialog.show();
-            sharedPreferences.edit().putBoolean("firstRun",false).apply();
+            sharedPreferences.edit().putBoolean("firstRun", false).apply();
         }
 
         findViewById(R.id.deptListCard).setOnClickListener(

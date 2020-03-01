@@ -9,13 +9,10 @@ import com.github.yashx.mit_ocw.activity.abstracts.CourseAndDepartmentBaseActivi
 import com.github.yashx.mit_ocw.fragment.DepartmentAllCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentFeaturedCoursesFragment;
 import com.github.yashx.mit_ocw.fragment.DepartmentHomeFragment;
-import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.github.yashx.mit_ocw.model.TabModel;
 import com.google.android.material.tabs.TabLayout;
 
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
