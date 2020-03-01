@@ -8,14 +8,19 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.github.yashx.mit_ocw.model.CourseListItem;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
+public class CoursesFromMultipleDepartmentJsonWithSearchViewModel extends ViewModel {
 
     private AsyncTask asyncTask;
 
@@ -24,8 +29,8 @@ public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
     private ArrayList<CourseListItem> allCourses;
     private Observer<String> textQueryObserver;
 
-    public CoursesFromLiTagWithSearchViewModel(String urlToLoad, String selectorToLi) {
-        asyncTask = new PopularCoursesFromLiTagAsyncTask(urlToLoad, selectorToLi).execute();
+    public CoursesFromMultipleDepartmentJsonWithSearchViewModel(String[] urlToLoad) {
+        asyncTask = new PopularCoursesFromMultipleDepartmentJsonAsyncTask(urlToLoad).execute();
 
 
         textQueryObserver = new Observer<String>() {
@@ -58,14 +63,12 @@ public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
         return textQuery;
     }
 
-    private class PopularCoursesFromLiTagAsyncTask extends AsyncTask<Void
+    private class PopularCoursesFromMultipleDepartmentJsonAsyncTask extends AsyncTask<Void
             , ArrayList<CourseListItem>, ArrayList<CourseListItem>> {
-        private String urlToLoad;
-        private String selectorToLiTag;
+        private String[] urlToLoad;
 
-        PopularCoursesFromLiTagAsyncTask(String urlToLoad, String selectorToLiTag) {
+        PopularCoursesFromMultipleDepartmentJsonAsyncTask(String[] urlToLoad) {
             this.urlToLoad = urlToLoad;
-            this.selectorToLiTag = selectorToLiTag;
         }
 
         @Override
@@ -79,36 +82,35 @@ public class CoursesFromLiTagWithSearchViewModel extends ViewModel {
         protected ArrayList<CourseListItem> doInBackground(Void... voids) {
             ArrayList<CourseListItem> courseListItems = new ArrayList<>();
             try {
-                Document doc = Jsoup.connect(urlToLoad).get();
-                Elements eTs = doc.select(selectorToLiTag);
-                for (int i = 0; i < eTs.size(); i++) {
-                    String url = eTs.get(i).selectFirst("a").absUrl("href");
-                    if (!url.contains("https://"))
-                        url = "https://ocw.mit.edu" + url;
-                    if (!url.endsWith("/"))
-                        url += "/";
-
-                    CourseListItem courseListItem = new CourseListItem(
-                            eTs.get(i).attr("data-title"),
-                            eTs.get(i).attr("data-courseno"),
-                            eTs.get(i).attr("data-semester"),
-                            url
-                    );
-                    courseListItems.add(courseListItem);
-//                    publishProgress(courseListItems);
+                Gson gson = new Gson();
+                for (int i = 0; i < urlToLoad.length; i++) {
+                    String json = Jsoup.connect(urlToLoad[i]).ignoreContentType(true).execute().body();
+                    JsonArray jA = gson.fromJson(json,JsonArray.class);
+                    for(JsonElement jO:jA) {
+                        courseListItems.add(CourseListItem.fromJsonElement(jO));
+                        System.out.println(jO.toString());
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            for (int i = 0; i < courseListItems.size(); i++) {
-                for (int j = 0; j < courseListItems.size() - i - 1; j++)
-                    if (courseListItems.get(j).getTitle().toLowerCase()
-                            .compareTo(courseListItems.get(j + 1).getTitle().toLowerCase()) > 0) {
-                        CourseListItem temp = courseListItems.get(j);
-                        courseListItems.set(j, courseListItems.get(j + 1));
-                        courseListItems.set(j + 1, temp);
-                    }
-            }
+            System.out.println("Sorting Started");
+            Collections.sort(courseListItems, new Comparator<CourseListItem>() {
+                @Override
+                public int compare(CourseListItem o1, CourseListItem o2) {
+                    return o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
+                }
+            });
+//            for (int i = 0; i < courseListItems.size(); i++) {
+//                for (int j = 0; j < courseListItems.size() - i - 1; j++)
+//                    if (courseListItems.get(j).getTitle().toLowerCase()
+//                            .compareTo(courseListItems.get(j + 1).getTitle().toLowerCase()) > 0) {
+//                        CourseListItem temp = courseListItems.get(j);
+//                        courseListItems.set(j, courseListItems.get(j + 1));
+//                        courseListItems.set(j + 1, temp);
+//                    }
+//            }
+            System.out.println("Sorting Done");
             return (courseListItems);
 
         }

@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class CoursesFromJsonViewModelFactory implements ViewModelProvider.Factory {
+public class CoursesFromCourseJsonViewModelFactory implements ViewModelProvider.Factory {
     private String urlToLoad;
     private String selectorToAnchorTag;
 
-    public CoursesFromJsonViewModelFactory(String urlToLoad, String selectorToAnchorTag) {
+    public CoursesFromCourseJsonViewModelFactory(String urlToLoad, String selectorToAnchorTag) {
         this.urlToLoad = urlToLoad;
         this.selectorToAnchorTag = selectorToAnchorTag;
     }
@@ -16,6 +16,6 @@ public class CoursesFromJsonViewModelFactory implements ViewModelProvider.Factor
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new CoursesFromJsonViewModel(urlToLoad, selectorToAnchorTag);
+        return (T) new CoursesFromCourseJsonViewModel(urlToLoad, selectorToAnchorTag);
     }
 }

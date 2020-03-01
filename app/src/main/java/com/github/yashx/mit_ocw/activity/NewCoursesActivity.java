@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.yashx.mit_ocw.activity.abstracts.CommonWithRecyclerActivity;
 import com.github.yashx.mit_ocw.adapter.CourseListItemRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromJsonViewModelFactory;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromJsonViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CoursesFromCourseJsonViewModelFactory;
+import com.github.yashx.mit_ocw.viewmodel.CoursesFromCourseJsonViewModel;
 
 import java.util.ArrayList;
 
@@ -20,17 +20,17 @@ public class NewCoursesActivity extends CommonWithRecyclerActivity {
 
     @Override
     protected void initRecyclerView(final RecyclerView recyclerView, final ProgressBar progressBar) {
-        CoursesFromJsonViewModelFactory factory = new CoursesFromJsonViewModelFactory(
+        CoursesFromCourseJsonViewModelFactory factory = new CoursesFromCourseJsonViewModelFactory(
                 "https://ocw.mit.edu/courses/new-courses/",
                 "#course_wrapper   ul > li.courseListRow > ul li:first-child a"
         );
 
-        CoursesFromJsonViewModel coursesFromJsonViewModel = new ViewModelProvider(this, factory)
-                .get(CoursesFromJsonViewModel.class);
+        CoursesFromCourseJsonViewModel coursesFromCourseJsonViewModel = new ViewModelProvider(this, factory)
+                .get(CoursesFromCourseJsonViewModel.class);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        coursesFromJsonViewModel.getCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
+        coursesFromCourseJsonViewModel.getCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
             @Override
             public void onChanged(ArrayList<CourseListItem> courseListItems) {
                 recyclerView.setAdapter(new CourseListItemRecyclerAdapter(courseListItems));

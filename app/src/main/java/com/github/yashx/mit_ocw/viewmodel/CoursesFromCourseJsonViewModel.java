@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class CoursesFromJsonViewModel extends ViewModel {
+public class CoursesFromCourseJsonViewModel extends ViewModel {
     private MutableLiveData<ArrayList<CourseListItem>> courses;
     private AsyncTask asyncTask;
 
-    public CoursesFromJsonViewModel(String urlToLoad, String selectorToAnchorTag) {
+    public CoursesFromCourseJsonViewModel(String urlToLoad, String selectorToAnchorTag) {
         asyncTask = new CoursesFromJsonAsyncTask(urlToLoad,selectorToAnchorTag).execute();
     }
 

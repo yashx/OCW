@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.yashx.mit_ocw.R;
 import com.github.yashx.mit_ocw.adapter.CourseListItemNoImageRecyclerAdapter;
 import com.github.yashx.mit_ocw.model.CourseListItem;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromLiTagViewModelWithSearchFactory;
-import com.github.yashx.mit_ocw.viewmodel.CoursesFromLiTagWithSearchViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CoursesFromMultipleDepartmentJsonWithSearchViewModel;
+import com.github.yashx.mit_ocw.viewmodel.CoursesFromMultipleDepartmentJsonWithSearchViewModelFactory;
 import com.treebo.internetavailabilitychecker.InternetAvailabilityChecker;
 import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
 
@@ -48,20 +48,40 @@ public class AllCoursesActivity extends AppCompatActivity implements InternetCon
             Toolbar toolbar = findViewById(R.id.toolbarAllCourses);
             setSupportActionBar(toolbar);
 
-            CoursesFromLiTagViewModelWithSearchFactory factory = new CoursesFromLiTagViewModelWithSearchFactory(
-                    "https://ocw.mit.edu/courses/",
-                    "#course_wrapper   ul > li.courseListRow"
-            );
+//            CoursesFromLiTagViewModelWithSearchFactory factory = new CoursesFromLiTagViewModelWithSearchFactory(
+//                    "https://ocw.mit.edu/courses/",
+//                    "#course_wrapper   ul > li.courseListRow"
+//            );
+//
+//            final CoursesFromLiTagWithSearchViewModel coursesFromJsonViewModel =
+//                    new ViewModelProvider(this, factory)
+//                            .get(CoursesFromLiTagWithSearchViewModel.class);
 
-            final CoursesFromLiTagWithSearchViewModel coursesFromJsonViewModel =
+            String[] urls = {"https://ocw.mit.edu/courses/find-by-topic/business.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/energy.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/finearts.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/healthandmedicine.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/humanities.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/mathematics.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/science.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/socialscience.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/society.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/teachingandeducation.json",
+                    "https://ocw.mit.edu/courses/find-by-topic/engineering.json",
+
+            };
+            CoursesFromMultipleDepartmentJsonWithSearchViewModelFactory factory =
+                    new CoursesFromMultipleDepartmentJsonWithSearchViewModelFactory(urls);
+
+            final CoursesFromMultipleDepartmentJsonWithSearchViewModel jsonWithSearchViewModel =
                     new ViewModelProvider(this, factory)
-                            .get(CoursesFromLiTagWithSearchViewModel.class);
+                            .get(CoursesFromMultipleDepartmentJsonWithSearchViewModel.class);
 
             final ProgressBar progressBar = findViewById(R.id.progressBarAllCourses);
             final RecyclerView recyclerView = findViewById(R.id.recyclerViewAllCourses);
             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-            coursesFromJsonViewModel.getFilteredCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
+            jsonWithSearchViewModel.getFilteredCourses().observe(this, new Observer<ArrayList<CourseListItem>>() {
                 @Override
                 public void onChanged(ArrayList<CourseListItem> courseListItems) {
                     progressBar.setVisibility(View.GONE);
@@ -78,7 +98,7 @@ public class AllCoursesActivity extends AppCompatActivity implements InternetCon
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    coursesFromJsonViewModel.getTextQuery().setValue(newText);
+                    jsonWithSearchViewModel.getTextQuery().setValue(newText);
                     return true;
                 }
             });
