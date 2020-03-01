@@ -12,7 +12,7 @@ public class CourseListItem implements Serializable {
     String sem;
     String href;
 
-    public static CourseListItem fromJson(String json) {
+    public static CourseListItem fromCourseJson(String json) {
         Gson gson = new Gson();
         CourseListItem courseListItem = gson.fromJson(json, CourseListItem.class);
         courseListItem.setHrefFromThumb();
@@ -22,7 +22,7 @@ public class CourseListItem implements Serializable {
     public static CourseListItem fromJsonElement(JsonElement json) {
         Gson gson = new Gson();
         CourseListItem courseListItem = gson.fromJson(json, CourseListItem.class);
-        courseListItem.setHrefFromThumb();
+        courseListItem.fixHref();
         return courseListItem;
     }
 
@@ -53,6 +53,15 @@ public class CourseListItem implements Serializable {
         if(thumb == null)
             return;
         href = thumb.substring(0, thumb.lastIndexOf("/"));
+        if (!href.contains("https://"))
+            href = "https://ocw.mit.edu" + href;
+        if (!href.endsWith("/"))
+            href += "/";
+    }
+
+    private void fixHref() {
+        if (!href.startsWith("/"))
+            href = "/"+ href;
         if (!href.contains("https://"))
             href = "https://ocw.mit.edu" + href;
         if (!href.endsWith("/"))

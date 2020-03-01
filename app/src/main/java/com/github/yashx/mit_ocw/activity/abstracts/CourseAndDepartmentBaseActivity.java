@@ -89,7 +89,6 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity
 
     @Override
     public void onInternetConnectivityChanged(boolean isConnected) {
-        System.out.println(isConnected);
         if (lastState != null && (lastState == isConnected))
             return;
         lastState = isConnected;

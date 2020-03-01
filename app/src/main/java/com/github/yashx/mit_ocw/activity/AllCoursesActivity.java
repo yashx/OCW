@@ -38,7 +38,6 @@ public class AllCoursesActivity extends AppCompatActivity implements InternetCon
 
     @Override
     public void onInternetConnectivityChanged(boolean isConnected) {
-        System.out.println("isConnected " + isConnected);
         if (lastState != null && (lastState == isConnected))
             return;
         lastState = isConnected;

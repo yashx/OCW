@@ -11,12 +11,10 @@ import com.github.yashx.mit_ocw.model.CourseListItem;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -85,32 +83,20 @@ public class CoursesFromMultipleDepartmentJsonWithSearchViewModel extends ViewMo
                 Gson gson = new Gson();
                 for (int i = 0; i < urlToLoad.length; i++) {
                     String json = Jsoup.connect(urlToLoad[i]).ignoreContentType(true).execute().body();
-                    JsonArray jA = gson.fromJson(json,JsonArray.class);
-                    for(JsonElement jO:jA) {
+                    JsonArray jA = gson.fromJson(json, JsonArray.class);
+                    for (JsonElement jO : jA) {
                         courseListItems.add(CourseListItem.fromJsonElement(jO));
-                        System.out.println(jO.toString());
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Sorting Started");
             Collections.sort(courseListItems, new Comparator<CourseListItem>() {
                 @Override
                 public int compare(CourseListItem o1, CourseListItem o2) {
                     return o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
                 }
             });
-//            for (int i = 0; i < courseListItems.size(); i++) {
-//                for (int j = 0; j < courseListItems.size() - i - 1; j++)
-//                    if (courseListItems.get(j).getTitle().toLowerCase()
-//                            .compareTo(courseListItems.get(j + 1).getTitle().toLowerCase()) > 0) {
-//                        CourseListItem temp = courseListItems.get(j);
-//                        courseListItems.set(j, courseListItems.get(j + 1));
-//                        courseListItems.set(j + 1, temp);
-//                    }
-//            }
-            System.out.println("Sorting Done");
             return (courseListItems);
 
         }

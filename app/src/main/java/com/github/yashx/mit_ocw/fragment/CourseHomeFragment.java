@@ -69,7 +69,6 @@ public class CourseHomeFragment extends Fragment {
                     for (Element e : eTs) {
                         //getting absolute url (absUrl doesn't work as doc is loaded from html)
                         String url = "https://ocw.mit.edu" + e.selectFirst("a").attr("href");
-                        System.out.println(url);
                         String s = e.text().trim();
                         if (s.contains(">")) {
                             s = s.substring(s.lastIndexOf(">") + 1);

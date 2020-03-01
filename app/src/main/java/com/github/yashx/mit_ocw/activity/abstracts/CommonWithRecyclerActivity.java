@@ -29,7 +29,6 @@ public abstract class CommonWithRecyclerActivity extends AppCompatActivity
 
     @Override
     public void onInternetConnectivityChanged(boolean isConnected) {
-        System.out.println("isConnected " + isConnected);
         if (lastState != null && (lastState == isConnected))
             return;
         lastState = isConnected;

@@ -26,7 +26,7 @@ public class CoursesFromUrlViewModel extends ViewModel {
         urlArr.observeForever(new Observer<String[]>() {
             @Override
             public void onChanged(String[] urls) {
-                if(asyncTask!=null)
+                if (asyncTask != null)
                     asyncTask.cancel(true);
                 asyncTask = new CoursesFromUrlAsyncTask(urls).execute();
             }
@@ -61,9 +61,8 @@ public class CoursesFromUrlViewModel extends ViewModel {
             ArrayList<CourseListItem> courseListItems = new ArrayList<>();
             try {
                 for (int i = 0; i < urls.length; i++) {
-                    System.out.println(urls.length);
                     String url = urls[i];
-                    if(url.isEmpty())
+                    if (url.isEmpty())
                         continue;
                     if (!url.contains("https://"))
                         url = "https://ocw.mit.edu" + url;
@@ -71,7 +70,7 @@ public class CoursesFromUrlViewModel extends ViewModel {
                         url += "/";
                     url = url + "index.json";
                     String json = Jsoup.connect(url).ignoreContentType(true).execute().body();
-                    courseListItems.add(CourseListItem.fromJson(json));
+                    courseListItems.add(CourseListItem.fromCourseJson(json));
                     Log.e(TAG, "doInBackground: " + json);
                 }
             } catch (Exception e) {

@@ -108,7 +108,7 @@ public class DepartmentFeaturedCoursesFragment extends Fragment {
 
             //object from model class
             final CourseListItem courseListItem;
-            courseListItem = CourseListItem.fromJson(json);
+            courseListItem = CourseListItem.fromCourseJson(json);
 
             //inflating listitem_course and adding it to fragment
             View v = LayoutInflater.from(context).inflate(R.layout.listitem_course, linearLayout, false);

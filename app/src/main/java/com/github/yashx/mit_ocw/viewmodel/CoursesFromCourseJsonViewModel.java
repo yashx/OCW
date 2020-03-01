@@ -62,7 +62,7 @@ public class CoursesFromCourseJsonViewModel extends ViewModel {
                     url = url + "index.json";
 
                     String json = Jsoup.connect(url).ignoreContentType(true).execute().body();
-                    courseListItems.add(CourseListItem.fromJson(json));
+                    courseListItems.add(CourseListItem.fromCourseJson(json));
                     Log.e(TAG, "doInBackground: "+json );
                 }
             } catch (Exception e) {

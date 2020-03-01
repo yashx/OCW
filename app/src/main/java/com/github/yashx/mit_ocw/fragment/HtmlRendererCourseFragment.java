@@ -102,7 +102,6 @@ public class HtmlRendererCourseFragment extends Fragment {
                     for (Element e : eTs) {
                         //getting absolute url
                         String url = "https://ocw.mit.edu/" + e.selectFirst("a").attr("href");
-                        System.out.println(url);
                         String s = e.text().trim();
                         Chip chip = new Chip(context);
                         chip.setText(s);

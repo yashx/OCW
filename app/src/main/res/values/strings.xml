@@ -13,6 +13,8 @@
     <string name="appContribute">Contribute to App</string>
     <string name="appContributeDesc">To be clear, this app is an open sourced unofficial mobile client for MIT OCW. https://ocw.mit.edu/\n\nIf you have any suggestions, feature request or problems, please visit the project on https://github.com/yashx/OCW and tell me about it. I will try to help as best as I can.</string>
 
+    <string name="disclaimer">This app is not the official app for MIT OCW and is in no way related or endorsed by them. This is just a project I built on a whim.\n\nIf you have any problem with the course material please understand that I have no control over it, I just show what is on the website in a more user friendly way.</string>
+
     <string name="ocwAttribution">Open Source Libraries Used</string>
     <string name="ocwAttributionDesc">• Jsoup\n\t\thttps://github.com/jhy/jsoup/\n\n• Picasso\n\t\thttps://github.com/square/picasso\n\n• Gson\n\t\thttps://github.com/google/gson\n\n• InternetAvailabilityChecker\n\t\thttps://github.com/AggarwalAnkit/InternetAvailabilityChecker</string>
 
