@@ -1,6 +1,6 @@
 # OCW: Unofficial App for MIT OCW
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/85db112323ec4fa28f64b309cad6cd7b)](https://www.codacy.com/manual/yashx/OCW?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=yashx/OCW&amp;utm_campaign=Badge_Grade)
-[![GitHub license](https://img.shields.io/github/license/yashx/OCW)](https://github.com/yashx/OCW/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-green)](https://github.com/yashx/OCW/blob/master/LICENSE)
 
 <a href="https://play.google.com/store/apps/details?id=com.github.yashx.mit_ocw"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="75"></a>
 ## Disclaimer
