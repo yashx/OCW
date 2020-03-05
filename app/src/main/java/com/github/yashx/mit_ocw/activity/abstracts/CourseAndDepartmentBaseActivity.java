@@ -121,7 +121,7 @@ public abstract class CourseAndDepartmentBaseActivity extends AppCompatActivity
             ImageTextTabBarFragment imageTextTabBarFragment = new ImageTextTabBarFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayoutImageCommonActivity, imageTextTabBarFragment)
-                    .commit();
+                    .commitAllowingStateLoss();
 
             asyncTask = new CourseAndDepartmentBaseAsyncTask().execute(url);
         } else {
